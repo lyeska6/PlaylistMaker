@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 class SettingsActivity:  AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_settings)
 
         val arrowBackButton: ImageView = findViewById<ImageView>(R.id.arrowBack)
