@@ -1,82 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/blue"
-    android:paddingHorizontal="@dimen/padding_16"
-    android:paddingTop="@dimen/pad_14">
+    style="@style/LinearLayoutScreen"
+    android:background="@color/main_screen_color">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:text="@string/app_name"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_main" />
+    <FrameLayout
+        style="@style/HeadingFrameLayout">
+
+        <TextView
+            style="@style/HeadingTextView"
+            android:text="@string/app_name"
+            android:textColor="@color/white"/>
+    </FrameLayout>
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginTop="@dimen/pad_40"
+        android:background="@color/main_screen_color"
+        android:layout_marginTop="@dimen/pad_24"
         android:layout_marginBottom="@dimen/pad_28"
+        android:layout_marginHorizontal="@dimen/padding_16"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/butSearch"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:cornerRadius="@dimen/corner_radius"
-            android:backgroundTint="@color/white"
+            style="@style/MainButtonStyle"
             android:text="@string/search"
-            android:textSize="@dimen/text_size_main"
-            android:textColor="@color/nice_black"
-            android:textAllCaps="false"
-            app:icon="@drawable/search_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/nice_black"
-            app:iconPadding="@dimen/icon_padding"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:icon="@drawable/search_icon"/>
 
         <Button
             android:id="@+id/butMedia"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            style="@style/MainButtonStyle"
             android:layout_marginVertical="@dimen/padding_16"
-            app:cornerRadius="@dimen/corner_radius"
-            android:backgroundTint="@color/white"
             android:text="@string/media"
-            android:textSize="@dimen/text_size_main"
-            android:textColor="@color/nice_black"
-            android:textAllCaps="false"
-            app:icon="@drawable/media_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/nice_black"
-            app:iconPadding="@dimen/icon_padding"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:icon="@drawable/media_icon"/>
 
         <Button
             android:id="@+id/butSettings"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            app:cornerRadius="@dimen/corner_radius"
-            android:backgroundTint="@color/white"
+            style="@style/MainButtonStyle"
             android:text="@string/settings"
-            android:textSize="@dimen/text_size_main"
-            android:textColor="@color/nice_black"
-            android:textAllCaps="false"
-            app:icon="@drawable/settings_icon"
-            app:iconGravity="textStart"
-            app:iconTint="@color/nice_black"
-            app:iconPadding="@dimen/icon_padding"
-            android:foreground="?attr/selectableItemBackground"/>
+            app:icon="@drawable/settings_icon"/>
     </LinearLayout>
 
 </LinearLayout>
