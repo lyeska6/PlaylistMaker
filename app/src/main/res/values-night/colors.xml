@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="thumb_tint_settings">#3772E7</color>
+    <color name="track_tint_settings">#9FBBF3</color>
+    <color name="settings_icon">#FFFFFF</color>
+    <color name="main_screen_color">#1A1B22</color>
+    <color name="screen_color">#1A1B22</color>
+    <color name="settings_text">#FFFFFF</color>
+    <color name="heading_text">#FFFFFF</color>
+    <color name="search_backgroung">#FFFFFF</color>
+    <color name="search_hint_icon">#1A1B22</color>
+    <color name="search_text">#000000</color>
+</resources>

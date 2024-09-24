@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="text_size_main">22sp</dimen>
+    <dimen name="icon_padding">8dp</dimen>
+    <dimen name="main_but_corner_radius">16dp</dimen>
+    <dimen name="padding_16">16dp</dimen>
+    <dimen name="text_size_16">16sp</dimen>
+    <dimen name="height_61">61dp</dimen>
+    <dimen name="pad_14">14dp</dimen>
+    <dimen name="pad_40">40dp</dimen>
+    <dimen name="pad_28">28dp</dimen>
+    <dimen name="pad_56">56dp</dimen>
+    <dimen name="pad_48">48dp</dimen>
+    <dimen name="pad_20">20dp</dimen>
+    <dimen name="pad_24">24dp</dimen>
+    <dimen name="pad_18">18dp</dimen>
+    <dimen name="pad_22">22dp</dimen>
+    <dimen name="pad_8">8dp</dimen>
+    <dimen name="pad_52">52dp</dimen>
+    <dimen name="search_corner_radius">8dp</dimen>
+</resources>
