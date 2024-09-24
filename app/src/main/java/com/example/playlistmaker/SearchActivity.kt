@@ -18,10 +18,6 @@ class SearchActivity : AppCompatActivity() {
         setContentView(R.layout.activity_search)
         window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
 
-        if (savedInstanceState != null) {
-            textSearch = savedInstanceState.getString(INPUT_SEARCH, TEXT_SEARCH)
-        }
-
         val inputSearch = findViewById<EditText>(R.id.searchInput)
         val emptySearch = findViewById<ImageView>(R.id.emptySearch)
 
@@ -60,6 +56,11 @@ class SearchActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(INPUT_SEARCH, textSearch)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        textSearch = savedInstanceState.getString(INPUT_SEARCH, TEXT_SEARCH)
     }
 
     companion object {
