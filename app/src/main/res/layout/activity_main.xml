@@ -1,48 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/LinearLayoutScreen"
-    android:background="@color/main_screen_color">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
 
-    <FrameLayout
-        style="@style/HeadingFrameLayout">
-
-        <TextView
-            style="@style/HeadingTextView"
-            android:text="@string/app_name"
-            android:textColor="@color/white"/>
-    </FrameLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/main_screen_color"
-        android:layout_marginTop="@dimen/pad_24"
-        android:layout_marginBottom="@dimen/pad_28"
-        android:layout_marginHorizontal="@dimen/padding_16"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
-            android:id="@+id/butSearch"
-            style="@style/MainButtonStyle"
-            android:text="@string/search"
-            app:icon="@drawable/search_icon"/>
-
-        <Button
-            android:id="@+id/butMedia"
-            style="@style/MainButtonStyle"
-            android:layout_marginVertical="@dimen/padding_16"
-            android:text="@string/media"
-            app:icon="@drawable/media_icon"/>
-
-        <Button
-            android:id="@+id/butSettings"
-            style="@style/MainButtonStyle"
-            android:text="@string/settings"
-            app:icon="@drawable/settings_icon"/>
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
