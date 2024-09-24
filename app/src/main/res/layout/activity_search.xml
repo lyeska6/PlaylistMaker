@@ -20,30 +20,37 @@
         android:paddingHorizontal="@dimen/padding_16"
         android:paddingVertical="@dimen/pad_8">
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/searchInput"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:background="@drawable/shape">
+            android:background="@drawable/shape"
+            android:maxLines="1"
+            android:gravity="center_vertical"
+            android:inputType="text"
+            android:textColor="@color/search_text"
+            android:fontFamily="@font/ys_display_regular"
+            android:textFontWeight="400"
+            android:textSize="@dimen/text_size_16"
+            android:hint="@string/search_hint"
+            android:textColorHint="@color/search_hint_icon"
+            android:textCursorDrawable="@drawable/cursor"
+            android:cursorVisible="true"
+            android:drawableStart="@drawable/search"
+            android:drawableTint="@color/search_hint_icon"
+            android:paddingStart="@dimen/pad_14"
+            android:drawablePadding="@dimen/pad_8"
+            app:boxBackgroundMode="none"/>
 
-            <EditText
-                android:id="@+id/searchInput"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:maxLines="1"
-                android:inputType="text"
-                android:textColor="@color/search_text"
-                android:fontFamily="@font/ys_display_regular"
-                android:textFontWeight="400"
-                android:textSize="@dimen/text_size_16"
-                android:hint="@string/search_hint"
-                android:textColorHint="@color/search_hint_icon"
-                android:gravity="center_vertical"
-                app:boxBackgroundMode="none"
-                />
-        </LinearLayout>
-
+        <ImageView
+            android:id="@+id/emptySearch"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/close_edittext"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/pad_14"
+            android:visibility="gone"
+            app:tint="@color/search_hint_icon" />
     </FrameLayout>
 
 </LinearLayout>
