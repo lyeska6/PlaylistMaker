@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="LinearLayoutScreen" parent="Base.Theme.PlaylistMaker">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="MainButtonStyle" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="cornerRadius">@dimen/main_but_corner_radius</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+        <item name="android:textColor">@color/nice_black</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconTint">@color/nice_black</item>
+        <item name="iconPadding">@dimen/icon_padding</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="SettingsText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:textColor">@color/settings_text</item>
+        <item name="android:textSize">@dimen/text_size_16</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="FrameLayoutSettings">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/height_61</item>
+        <item name="android:paddingStart">@dimen/padding_16</item>
+    </style>
+
+    <style name="HeadingFrameLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/pad_56</item>
+        <item name="android:paddingStart">@dimen/padding_16</item>
+        <item name="android:paddingTop">@dimen/pad_14</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="HeadingTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/heading_text</item>
+        <item name="android:textSize">@dimen/text_size_main</item>
+    </style>
+</resources>
