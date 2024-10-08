@@ -1,9 +1,11 @@
 package com.example.playlistmaker
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
@@ -13,6 +15,9 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class SearchActivity : AppCompatActivity() {
+
+    private var textSearch : String = TEXT_SEARCH
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -20,11 +25,13 @@ class SearchActivity : AppCompatActivity() {
 
         val inputSearch = findViewById<EditText>(R.id.searchInput)
         val emptySearch = findViewById<ImageView>(R.id.emptySearch)
+        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
         inputSearch.setText(textSearch)
 
         emptySearch.setOnClickListener{
             inputSearch.setText("")
+            inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
         }
 
         val textListener = object : TextWatcher {
@@ -50,8 +57,6 @@ class SearchActivity : AppCompatActivity() {
             View.VISIBLE
         }
     }
-
-    private var textSearch : String = TEXT_SEARCH
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)

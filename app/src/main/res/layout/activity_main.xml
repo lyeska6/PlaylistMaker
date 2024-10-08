@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/LinearLayoutScreen"
-    android:background="@color/main_screen_color">
+    android:background="@color/main_screen_color"
+    android:gravity="center_horizontal">
 
     <FrameLayout
         style="@style/HeadingFrameLayout">
@@ -13,36 +14,25 @@
             android:textColor="@color/white"/>
     </FrameLayout>
 
+    <Button
+        android:id="@+id/butSearch"
+        style="@style/MainButtonStyle"
+        android:text="@string/search"
+        app:icon="@drawable/search_icon"
+        android:layout_marginTop="@dimen/pad_24"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/main_screen_color"
-        android:layout_marginTop="@dimen/pad_24"
-        android:layout_marginBottom="@dimen/pad_28"
-        android:layout_marginHorizontal="@dimen/padding_16"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+    <Button
+        android:id="@+id/butMedia"
+        style="@style/MainButtonStyle"
+        android:layout_marginVertical="@dimen/padding_16"
+        android:text="@string/media"
+        app:icon="@drawable/media_icon"/>
 
-        <Button
-            android:id="@+id/butSearch"
-            style="@style/MainButtonStyle"
-            android:text="@string/search"
-            app:icon="@drawable/search_icon"/>
-
-        <Button
-            android:id="@+id/butMedia"
-            style="@style/MainButtonStyle"
-            android:layout_marginVertical="@dimen/padding_16"
-            android:text="@string/media"
-            app:icon="@drawable/media_icon"/>
-
-        <Button
-            android:id="@+id/butSettings"
-            style="@style/MainButtonStyle"
-            android:text="@string/settings"
-            app:icon="@drawable/settings_icon"/>
-    </LinearLayout>
+    <Button
+        android:id="@+id/butSettings"
+        style="@style/MainButtonStyle"
+        android:text="@string/settings"
+        app:icon="@drawable/settings_icon"
+        android:layout_marginBottom="@dimen/pad_28"/>
 
 </LinearLayout>

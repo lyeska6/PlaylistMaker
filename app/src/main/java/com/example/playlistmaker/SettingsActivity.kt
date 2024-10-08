@@ -1,36 +1,25 @@
 package com.example.playlistmaker
 
+import android.annotation.SuppressLint
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract.CommonDataKinds.Im
 import android.widget.ImageView
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 
 class SettingsActivity:  AppCompatActivity() {
+    @SuppressLint("QueryPermissionsNeeded")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
 
-        //val arrowBackButton: ImageView = findViewById<ImageView>(R.id.arrowBack)
-        //arrowBackButton.setOnClickListener{
-        //    startActivity(Intent(this, MainActivity::class.java))
-        //}
-        //shareButton.setOnClickListener {
-        //            val message = "Привет, Android разработка — это круто!"
-        //            val shareIntent = Intent(Intent.ACTION_SENDTO)
-        //            shareIntent.data = Uri.parse("mailto:")
-        //            shareIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("yourEmail@ya.ru"))
-        //            shareIntent.putExtra(Intent.EXTRA_TEXT, message)
-        //            startActivity(shareIntent)
-        //        }
-
         val shareApp = findViewById<ImageView>(R.id.shareApp)
         shareApp.setOnClickListener {
-            val message = R.string.course_url
+            val message = getString(R.string.course_url)
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.putExtra(Intent.EXTRA_TEXT, message)
             shareIntent.setType("text/plain")
@@ -40,11 +29,17 @@ class SettingsActivity:  AppCompatActivity() {
         val supportBut = findViewById<ImageView>(R.id.supportBut)
         supportBut.setOnClickListener {
             val supportIntent = Intent(Intent.ACTION_SEND)
-            supportIntent.data = Uri.parse("mailto:")
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(R.string.my_mail))
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, R.string.mail_subject)
-            supportIntent.putExtra(Intent.EXTRA_TEXT, R.string.support_text)
-            startActivity(supportIntent)
+            supportIntent.setData(Uri.parse("mailto:"))
+            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_mail)))
+            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
+            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_text))
+            try {
+                startActivity(supportIntent)
+            } catch (e: ActivityNotFoundException) {
+                Toast.makeText(this@SettingsActivity,
+                    getString(R.string.exeption_support_mail),
+                    Toast.LENGTH_LONG).show()
+            }
         }
 
         val agreementBut = findViewById<ImageView>(R.id.agreementBut)
