@@ -28,18 +28,13 @@ class SettingsActivity:  AppCompatActivity() {
 
         val supportBut = findViewById<ImageView>(R.id.supportBut)
         supportBut.setOnClickListener {
-            val supportIntent = Intent(Intent.ACTION_SEND)
-            supportIntent.setData(Uri.parse("mailto:"))
-            supportIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_mail)))
-            supportIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
-            supportIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.support_text))
-            try {
-                startActivity(supportIntent)
-            } catch (e: ActivityNotFoundException) {
-                Toast.makeText(this@SettingsActivity,
-                    getString(R.string.exeption_support_mail),
-                    Toast.LENGTH_LONG).show()
+            val supportIntent = Intent(Intent.ACTION_SENDTO).apply {
+                data = Uri.parse("mailto:")
+                putExtra(Intent.EXTRA_EMAIL, arrayOf(getString(R.string.my_mail)))
+                putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject))
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.support_text))
             }
+            startActivity(supportIntent)
         }
 
         val agreementBut = findViewById<ImageView>(R.id.agreementBut)
