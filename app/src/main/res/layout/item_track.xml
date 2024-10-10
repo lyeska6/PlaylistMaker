@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_60"
+    xmlns:tool="http://schemas.android.com/tools">
+
+    <ImageView
+        android:id="@+id/track_cover"
+        android:layout_width="@dimen/track_image_search"
+        android:layout_height="@dimen/track_image_search"
+        android:layout_marginStart="@dimen/pad_12"
+        android:layout_gravity="center_vertical"/>
+
+    <TextView
+        android:id="@+id/track_name"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/track_text_mar_start"
+        android:layout_marginEnd="@dimen/track_text_mar_end"
+        style="@style/TrackTextSearch"
+        android:layout_marginTop="@dimen/pad_14"
+        android:textSize="@dimen/text_size_16"
+        android:textColor="@color/track_name"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="@dimen/track_text_mar_start"
+        android:layout_marginEnd="@dimen/track_text_mar_end"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="@dimen/pad_14">
+
+        <TextView
+            android:id="@+id/track_artist"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/TrackTextSearch"
+            android:textSize="@dimen/text_size_11"/>
+
+        <TextView
+            android:id="@+id/track_time"
+            android:layout_width="wrap_content"
+            style="@style/TrackTextSearch"
+            android:paddingStart="@dimen/pad_4"
+            android:drawablePadding="@dimen/pad_4"
+            app:drawableStartCompat="@drawable/track_time_sep"
+            app:drawableTint="@color/track_info"
+            android:textSize="@dimen/text_size_11"
+            tool:ignore="RtlSymmetry"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="@dimen/pad_24"
+        android:layout_height="@dimen/pad_24"
+        android:layout_gravity="center_vertical|end"
+        android:layout_marginEnd="@dimen/pad_12"
+        android:scaleType="center"
+        android:src="@drawable/arrow_forward"
+        app:tint="@color/track_info"/>
+
+</FrameLayout>

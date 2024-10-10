@@ -10,4 +10,6 @@
     <color name="search_backgroung">#FFFFFF</color>
     <color name="search_hint_icon">#1A1B22</color>
     <color name="search_text">#000000</color>
+    <color name="track_name">#FFFFFF</color>
+    <color name="track_info">#FFFFFF</color>
 </resources>

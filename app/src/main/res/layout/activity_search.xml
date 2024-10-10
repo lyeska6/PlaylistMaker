@@ -18,7 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/pad_52"
         android:paddingHorizontal="@dimen/padding_16"
-        android:paddingVertical="@dimen/pad_8">
+        android:paddingVertical="@dimen/pad_8"
+        android:layout_marginBottom="@dimen/padding_16">
 
         <EditText
             android:id="@+id/searchInput"
@@ -52,6 +53,11 @@
             android:visibility="gone"
             app:tint="@color/search_hint_icon" />
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchTracks"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </LinearLayout>
 
