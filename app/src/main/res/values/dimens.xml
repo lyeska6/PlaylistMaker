@@ -19,4 +19,9 @@
     <dimen name="pad_52">52dp</dimen>
     <dimen name="search_corner_radius">8dp</dimen>
     <dimen name="pad_12">12dp</dimen>
+    <dimen name="track_image_search">44dp</dimen>
+    <dimen name="track_text_mar_start">66dp</dimen>
+    <dimen name="text_size_11">11sp</dimen>
+    <dimen name="pad_4">4dp</dimen>
+    <dimen name="track_text_mar_end">44dp</dimen>
 </resources>
