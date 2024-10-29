@@ -41,6 +41,8 @@
             android:drawableTint="@color/search_hint_icon"
             android:paddingStart="@dimen/pad_14"
             android:drawablePadding="@dimen/pad_8"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             app:boxBackgroundMode="none"/>
 
         <ImageView
@@ -55,9 +57,47 @@
     </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchTracks"
+        android:id="@+id/tracksSearchRV"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <ImageView
+        android:id="@+id/searchErrorIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/pad_102"/>
+
+    <TextView
+        android:id="@+id/searchErrorText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/pad_24"
+        android:layout_marginTop="@dimen/padding_16"
+        android:gravity="center_horizontal"
+        android:textSize="@dimen/text_size_19"
+        android:textFontWeight="400"
+        android:fontFamily="@font/ys_display_medium"
+        tools:text="Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
+        android:textColor="@color/search_error"/>
+
+    <Button
+        android:id="@+id/searchErrorBut"
+        style="Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/pad_24"
+        android:paddingHorizontal="@dimen/pad_14"
+        android:paddingVertical="@dimen/pad_10"
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/search_error"
+        app:cornerRadius="@dimen/corner_rad_refresh_but"
+        android:text="@string/refresh_but"
+        android:textAllCaps="false"
+        android:fontFamily="@font/ys_display_medium"
+        android:textFontWeight="500"
+        android:textSize="@dimen/text_size_14"
+        android:textColor="@color/screen_color"/>
 
 </LinearLayout>
 

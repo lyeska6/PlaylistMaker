@@ -15,5 +15,6 @@
     <string name="mail_subject">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
     <string name="support_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="exeption_support_mail">Не смогли открыть приложение. Напишите lyesochka@yandex.ru</string>
+    <string name="refresh_but">Обновить</string>
     ?>
 </resources>

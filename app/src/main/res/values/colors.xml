@@ -19,4 +19,5 @@
     <color name="search_text">#1A1B22</color>
     <color name="track_name">#1A1B22</color>
     <color name="track_info">#AEAFB4</color>
+    <color name="search_error">#1A1B22</color>
 </resources>
