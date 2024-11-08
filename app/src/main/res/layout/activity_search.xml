@@ -56,17 +56,50 @@
             app:tint="@color/search_hint_icon" />
     </FrameLayout>
 
+    <LinearLayout
+        android:id="@+id/searchHistoryAll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/searchHistoryHeading"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/pad_52"
+            android:paddingTop="@dimen/pad_18"
+            android:gravity="center_horizontal"
+            android:text="@string/history_heading"
+            android:textColor="@color/heading_text"
+            android:fontFamily="@font/ys_display_medium"
+            android:textFontWeight="500"
+            android:textSize="@dimen/text_size_19"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/searchHistoryRV"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/clearHistoryBut"
+            style="@style/SearchBottomButton"
+            android:text="@string/clear_history_but"/>
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tracksSearchRV"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 
     <ImageView
         android:id="@+id/searchErrorIcon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/pad_102"/>
+        android:layout_marginTop="@dimen/pad_102"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/searchErrorText"
@@ -79,25 +112,14 @@
         android:textFontWeight="400"
         android:fontFamily="@font/ys_display_medium"
         tools:text="Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
-        android:textColor="@color/search_error"/>
+        android:textColor="@color/search_error"
+        android:visibility="gone"/>
 
     <Button
         android:id="@+id/searchErrorBut"
-        style="Widget.MaterialComponents.Button.UnelevatedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/pad_24"
-        android:paddingHorizontal="@dimen/pad_14"
-        android:paddingVertical="@dimen/pad_10"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/search_error"
-        app:cornerRadius="@dimen/corner_rad_refresh_but"
+        style="@style/SearchBottomButton"
         android:text="@string/refresh_but"
-        android:textAllCaps="false"
-        android:fontFamily="@font/ys_display_medium"
-        android:textFontWeight="500"
-        android:textSize="@dimen/text_size_14"
-        android:textColor="@color/screen_color"/>
+        android:visibility="gone"/>
 
 </LinearLayout>
 

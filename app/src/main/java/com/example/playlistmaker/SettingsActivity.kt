@@ -9,6 +9,8 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.material.switchmaterial.SwitchMaterial
+
 
 class SettingsActivity:  AppCompatActivity() {
     @SuppressLint("QueryPermissionsNeeded")
@@ -16,6 +18,14 @@ class SettingsActivity:  AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
         window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
+
+        val sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+        themeSwitcher.setChecked(sharedPrefs.getBoolean(THEME_PREFERENCE_KEY, false))
+        //themeSwitcher.isUseMaterialThemeColors = false
+        //themeSwitcher.thumbTintMode= R.color.thumb_tint_settings
+        //themeSwitcher.trackTintList = ContextCompat.getColorStateList(this, R.color.track_tint_settings)
 
         val shareApp = findViewById<ImageView>(R.id.shareApp)
         shareApp.setOnClickListener {
@@ -41,6 +51,14 @@ class SettingsActivity:  AppCompatActivity() {
         agreementBut.setOnClickListener {
             val agreementIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://yandex.ru/legal/practicum_offer/"))
             startActivity(agreementIntent)
+        }
+
+
+        themeSwitcher.setOnCheckedChangeListener{switcher, checked ->
+            sharedPrefs.edit()
+                .putBoolean(THEME_PREFERENCE_KEY, checked)
+                .apply()
+            (applicationContext as App).switchTheme(checked)
         }
 
     }

@@ -1,10 +1,13 @@
 package com.example.playlistmaker
 
+import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.recyclerview.widget.RecyclerView
 
-class TrackAdapter(var tracks : ArrayList<Track>): RecyclerView.Adapter<TrackViewHolder>() {
+class SearchedTracksAdapter(var tracks : ArrayList<Track>, val sharedPrefs : SharedPreferences): RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(
@@ -18,5 +21,8 @@ class TrackAdapter(var tracks : ArrayList<Track>): RecyclerView.Adapter<TrackVie
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
+        holder.itemView.setOnClickListener {
+            SearchHistory(sharedPrefs).addTrack(tracks[position])
+        }
     }
 }

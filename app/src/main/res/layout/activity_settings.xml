@@ -19,13 +19,15 @@
         <TextView style="@style/SettingsText"
             android:text="@string/dark_theme"/>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
             android:layout_width="@dimen/pad_48"
             android:layout_height="@dimen/pad_48"
             android:layout_gravity="center|end"
+            android:checked="false"
+            android:gravity="center"
             android:thumbTint="@color/thumb_tint_settings"
-            android:trackTint="@color/light_gray"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            android:trackTint="@color/light_gray"/>
     </FrameLayout>
 
     <FrameLayout style="@style/FrameLayoutSettings">

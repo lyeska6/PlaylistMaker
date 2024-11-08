@@ -16,5 +16,7 @@
     <string name="support_text">Спасибо разработчикам и разработчицам за крутое приложение!</string>
     <string name="exeption_support_mail">Не смогли открыть приложение. Напишите lyesochka@yandex.ru</string>
     <string name="refresh_but">Обновить</string>
+    <string name="history_heading">Вы искали</string>
+    <string name="clear_history_but">Очистить историю</string>
     ?>
 </resources>
