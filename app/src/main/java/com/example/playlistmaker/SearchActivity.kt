@@ -121,22 +121,21 @@ class SearchActivity : AppCompatActivity() {
         val sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         val searchHistoryData = SearchHistory(sharedPrefs)
         searchHistoryData.setArray()
-        val searchHistoryAdapter = SearchHistoryAdapter(searchHistoryData.historyTrackArray, sharedPrefs)
+        val searchHistoryAdapter = SearchHistoryAdapter(sharedPrefs, searchHistoryData)
         searchHistoryRV.adapter = searchHistoryAdapter
 
-        listener =
-            SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-                if (key == KEY_SEARCH_HISTORY_LIST) {
-                    searchHistoryAdapter.notifyDataSetChanged()
-                }
+        listener = SharedPreferences.OnSharedPreferenceChangeListener{ sharedPreferences, key ->
+            if (key == KEY_SEARCH_HISTORY_LIST) {
+                searchHistoryData.setArray(searchHistoryData.getSharedPrefs(key))
+                searchHistoryAdapter.notifyDataSetChanged()
             }
+        }
         sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
 
         val searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistoryAll)
         val clearSearchHistoryBut = findViewById<Button>(R.id.clearHistoryBut)
         clearSearchHistoryBut.setOnClickListener {
             searchHistoryData.clearHistory()
-            searchHistoryAdapter.notifyDataSetChanged()
             searchHistoryLayout.visibility = View.GONE
         }
 
@@ -157,6 +156,8 @@ class SearchActivity : AppCompatActivity() {
             searchedTracksArrayList.clear()
             searchedTracksAdapter.notifyDataSetChanged()
             searchedTracks.visibility = View.GONE
+            searchHistoryData.setArray()
+            searchHistoryAdapter.notifyDataSetChanged()
         }
 
         val textListener = object : TextWatcher {
@@ -166,7 +167,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 emptySearchBut.visibility = emptyButVisibility(s)
-                val newData = sharedPrefs.getString(KEY_SEARCH_HISTORY_LIST, null)
+                val newData = searchHistoryData.jsonToArrayList(searchHistoryData.getSharedPrefs(KEY_SEARCH_HISTORY_LIST))
                 searchHistoryLayout.visibility = if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !newData.isNullOrEmpty()) View.VISIBLE else View.GONE
             }
 
@@ -177,14 +178,14 @@ class SearchActivity : AppCompatActivity() {
         inputSearch.addTextChangedListener(textListener)
 
         inputSearch.setOnFocusChangeListener{view, hasFocus ->
-            val newData = sharedPrefs.getString(KEY_SEARCH_HISTORY_LIST, null)
+            val newData = searchHistoryData.jsonToArrayList(searchHistoryData.getSharedPrefs(KEY_SEARCH_HISTORY_LIST))
             searchHistoryLayout.visibility = if (hasFocus && inputSearch.text.isEmpty() && !newData.isNullOrEmpty()) View.VISIBLE else View.GONE
         }
 
         searchedTracks = findViewById<RecyclerView>(R.id.tracksSearchRV)
         searchedTracks.layoutManager = LinearLayoutManager(this@SearchActivity)
 
-        searchedTracksAdapter = SearchedTracksAdapter(searchedTracksArrayList, sharedPrefs)
+        searchedTracksAdapter = SearchedTracksAdapter(searchedTracksArrayList, searchHistoryData)
         searchedTracks.adapter = searchedTracksAdapter
 
         inputSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -198,6 +199,11 @@ class SearchActivity : AppCompatActivity() {
 
         errorRefreshBut.setOnClickListener{
             searchTracks(inputSearch.text.toString())
+        }
+
+        val backBut = findViewById<ImageView>(R.id.buttonBack)
+        backBut.setOnClickListener {
+            onBackPressed()
         }
 
     }

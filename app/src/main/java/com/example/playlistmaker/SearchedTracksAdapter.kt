@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchedTracksAdapter(var tracks : ArrayList<Track>, val sharedPrefs : SharedPreferences): RecyclerView.Adapter<TrackViewHolder>() {
+class SearchedTracksAdapter(var tracks : ArrayList<Track>, val searchHistory: SearchHistory): RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(
@@ -22,7 +22,8 @@ class SearchedTracksAdapter(var tracks : ArrayList<Track>, val sharedPrefs : Sha
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener {
-            SearchHistory(sharedPrefs).addTrack(tracks[position])
+            searchHistory.addTrack(tracks[position])
+            searchHistory.setArray()
         }
     }
 }

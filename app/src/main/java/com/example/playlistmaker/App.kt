@@ -10,13 +10,13 @@ const val KEY_SEARCH_HISTORY_LIST = "search_history_list"
 
 class App : Application() {
 
-    var darkTheme = false
+    private var darkTheme = false
 
     override fun onCreate() {
         super.onCreate()
 
         val sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
-        val darkTheme = sharedPrefs.getBoolean(THEME_PREFERENCE_KEY, false)
+        darkTheme = sharedPrefs.getBoolean(THEME_PREFERENCE_KEY, false)
         switchTheme(darkTheme)
     }
 

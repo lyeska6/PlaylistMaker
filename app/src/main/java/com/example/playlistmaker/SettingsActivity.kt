@@ -61,5 +61,9 @@ class SettingsActivity:  AppCompatActivity() {
             (applicationContext as App).switchTheme(checked)
         }
 
+        val backBut = findViewById<ImageView>(R.id.buttonBack)
+        backBut.setOnClickListener {
+            onBackPressed()
+        }
     }
 }

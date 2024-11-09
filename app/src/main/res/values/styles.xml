@@ -59,9 +59,6 @@
     <style name="HeadingFrameLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/pad_56</item>
-        <item name="android:paddingStart">@dimen/padding_16</item>
-        <item name="android:paddingTop">@dimen/pad_14</item>
-        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="HeadingTextView">
@@ -71,6 +68,8 @@
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/heading_text</item>
         <item name="android:textSize">@dimen/text_size_main</item>
+        <item name="android:paddingStart">@dimen/pad_12</item>
+        <item name="android:layout_marginTop">@dimen/pad_14</item>
     </style>
 
     <style name="TrackTextSearch">

@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 
-class SearchHistoryAdapter(var tracks : ArrayList<Track>, val sharedPrefs : SharedPreferences): RecyclerView.Adapter<TrackViewHolder>() {
+class SearchHistoryAdapter(val sharedPrefs : SharedPreferences, val searchHistory: SearchHistory): RecyclerView.Adapter<TrackViewHolder>() {
 
     lateinit var listener : SharedPreferences.OnSharedPreferenceChangeListener
 
@@ -17,22 +17,21 @@ class SearchHistoryAdapter(var tracks : ArrayList<Track>, val sharedPrefs : Shar
     }
 
     override fun getItemCount(): Int {
-        return tracks.size
+        return searchHistory.historyTrackArray.size
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        val searchHistoryData = SearchHistory(sharedPrefs)
         listener = SharedPreferences.OnSharedPreferenceChangeListener{ sharedPreferences, key ->
             if (key == KEY_SEARCH_HISTORY_LIST) {
-                tracks = searchHistoryData.setArray()
+                searchHistory.setArray()
+                this.notifyDataSetChanged()
             }
         }
         sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
 
+        holder.bind(searchHistory.historyTrackArray[position])
         holder.itemView.setOnClickListener {
-            searchHistoryData.addTrack(tracks[position])
-            tracks = searchHistoryData.historyTrackArray
+            searchHistory.addTrack(searchHistory.historyTrackArray[position])
         }
-        holder.bind(tracks[position])
     }
 }
