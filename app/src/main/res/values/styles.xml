@@ -24,6 +24,22 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="SearchBottomButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/pad_24</item>
+        <item name="android:paddingHorizontal">@dimen/pad_14</item>
+        <item name="android:paddingVertical">@dimen/pad_10</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:backgroundTint">@color/search_error</item>
+        <item name="cornerRadius">@dimen/corner_rad_refresh_but</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/screen_color</item>
+    </style>
+
     <style name="SettingsText">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -43,9 +59,6 @@
     <style name="HeadingFrameLayout">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/pad_56</item>
-        <item name="android:paddingStart">@dimen/padding_16</item>
-        <item name="android:paddingTop">@dimen/pad_14</item>
-        <item name="android:gravity">center_vertical</item>
     </style>
 
     <style name="HeadingTextView">
@@ -55,6 +68,8 @@
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/heading_text</item>
         <item name="android:textSize">@dimen/text_size_main</item>
+        <item name="android:paddingStart">@dimen/pad_12</item>
+        <item name="android:layout_marginTop">@dimen/pad_14</item>
     </style>
 
     <style name="TrackTextSearch">

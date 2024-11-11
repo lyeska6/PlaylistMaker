@@ -8,9 +8,22 @@
     <FrameLayout
         style="@style/HeadingFrameLayout">
 
+        <ImageView
+            android:id="@+id/buttonBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/arrow_back"
+            app:tint="@color/heading_text"
+            android:paddingVertical="@dimen/padding_16"
+            android:paddingHorizontal="@dimen/padding_16"
+            android:layout_marginStart="@dimen/pad_4"
+            android:layout_gravity="center_vertical"/>
+
         <TextView
             style="@style/HeadingTextView"
-            android:text="@string/settings"/>
+            android:text="@string/settings"
+            android:layout_marginStart="@dimen/pad_52"/>
+
     </FrameLayout>
 
     <FrameLayout style="@style/FrameLayoutSettings"
@@ -19,13 +32,15 @@
         <TextView style="@style/SettingsText"
             android:text="@string/dark_theme"/>
 
-        <Switch
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
             android:layout_width="@dimen/pad_48"
             android:layout_height="@dimen/pad_48"
             android:layout_gravity="center|end"
-            android:thumbTint="@color/thumb_tint_settings"
-            android:trackTint="@color/light_gray"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+            android:checked="false"
+            android:gravity="center"
+            app:thumbTint="@color/switch_thumb_selector"
+            app:trackTint="@color/switch_track_selector" />
     </FrameLayout>
 
     <FrameLayout style="@style/FrameLayoutSettings">

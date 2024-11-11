@@ -11,6 +11,7 @@
         <TextView
             style="@style/HeadingTextView"
             android:text="@string/app_name"
+            android:layout_marginStart="@dimen/pad_4"
             android:textColor="@color/white"/>
     </FrameLayout>
 

@@ -1,6 +1,7 @@
 package com.example.playlistmaker
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +12,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -19,12 +21,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.transition.Visibility
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.security.Key
 
 class SearchActivity : AppCompatActivity() {
 
@@ -39,13 +44,15 @@ class SearchActivity : AppCompatActivity() {
 
     val tracksSearchService = retrofit.create(ITunesApi::class.java)
 
-    private val trackArrayList = ArrayList<Track>()
-    lateinit var tracksAdapter : TrackAdapter
+    private val searchedTracksArrayList = ArrayList<Track>()
+    lateinit var searchedTracksAdapter : SearchedTracksAdapter
 
-    lateinit var searchTracks: RecyclerView
+    lateinit var searchedTracks: RecyclerView
     lateinit var errorIcon: ImageView
     lateinit var errorText: TextView
     lateinit var errorRefreshBut: Button
+
+    lateinit var listener : SharedPreferences.OnSharedPreferenceChangeListener
 
     fun searchTracks(text: String){
         val nothingFoundText = "Ничего не нашлось"
@@ -59,29 +66,26 @@ class SearchActivity : AppCompatActivity() {
                 ) {
                     if (response.code() == 200) {
                         if (response.body()?.results.isNullOrEmpty()) {
-                            Log.d("My_LOG", "чето ниче не найдено")// заглушка картинка что ниче не найдено
-                            searchTracks.visibility = View.GONE
+                            searchedTracks.visibility = View.GONE
                             errorRefreshBut.visibility = View.GONE
                             Glide.with(applicationContext).load(R.drawable.nothing_found_error).centerInside().into(errorIcon)
                             errorIcon.visibility = View.VISIBLE
-                            errorText.setText(nothingFoundText)
+                            errorText.text = nothingFoundText
                             errorText.visibility = View.VISIBLE
                         } else {
-                            Log.d("My_LOG", "все найдено, пуляем в эррэй")
                             errorIcon.visibility = View.GONE
                             errorRefreshBut.visibility = View.GONE
                             errorText.visibility = View.GONE
-                            trackArrayList.clear()
-                            trackArrayList.addAll(response.body()?.results!!)
-                            tracksAdapter.notifyDataSetChanged()
-                            searchTracks.visibility = View.VISIBLE
+                            searchedTracksArrayList.clear()
+                            searchedTracksArrayList.addAll(response.body()?.results!!)
+                            searchedTracksAdapter.notifyDataSetChanged()
+                            searchedTracks.visibility = View.VISIBLE
                         }
                     } else {
-                        Log.d("My_LOG", "Маловероятно, но интернета типо нет или с Api проблемы")// заглушка что проблема с поиском
-                        searchTracks.visibility = View.GONE
+                        searchedTracks.visibility = View.GONE
                         Glide.with(applicationContext).load(R.drawable.server_connection_error).centerInside().into(errorIcon)
                         errorIcon.visibility = View.VISIBLE
-                        errorText.setText(serverConnectionText)
+                        errorText.text = serverConnectionText
                         errorText.visibility = View.VISIBLE
                         errorRefreshBut.visibility = View.VISIBLE
                     }
@@ -91,10 +95,10 @@ class SearchActivity : AppCompatActivity() {
                     Log.d("My_LOG", "Маловероятно, но интернета типо нет или с Api проблемы")// та же заглушка проблем с поиском
                     //"Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
                     Log.d("My_LOG", "Маловероятно, но интернета типо нет или с Api проблемы")// заглушка что проблема с поиском
-                    searchTracks.visibility = View.GONE
+                    searchedTracks.visibility = View.GONE
                     Glide.with(applicationContext).load(R.drawable.server_connection_error).centerInside().into(errorIcon)
                     errorIcon.visibility = View.VISIBLE
-                    errorText.setText(serverConnectionText)
+                    errorText.text = serverConnectionText
                     errorText.visibility = View.VISIBLE
                     errorRefreshBut.visibility = View.VISIBLE
                 }
@@ -110,6 +114,31 @@ class SearchActivity : AppCompatActivity() {
 
         val inputSearch = findViewById<EditText>(R.id.searchInput)
         val emptySearchBut = findViewById<ImageView>(R.id.emptySearch)
+
+        val searchHistoryRV = findViewById<RecyclerView>(R.id.searchHistoryRV)
+        searchHistoryRV.layoutManager = LinearLayoutManager(this@SearchActivity)
+
+        val sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        val searchHistoryData = SearchHistory(sharedPrefs)
+        searchHistoryData.setArray()
+        val searchHistoryAdapter = SearchHistoryAdapter(sharedPrefs, searchHistoryData)
+        searchHistoryRV.adapter = searchHistoryAdapter
+
+        listener = SharedPreferences.OnSharedPreferenceChangeListener{ sharedPreferences, key ->
+            if (key == KEY_SEARCH_HISTORY_LIST) {
+                searchHistoryData.setArray(searchHistoryData.getSharedPrefs(key))
+                searchHistoryAdapter.notifyDataSetChanged()
+            }
+        }
+        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+
+        val searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistoryAll)
+        val clearSearchHistoryBut = findViewById<Button>(R.id.clearHistoryBut)
+        clearSearchHistoryBut.setOnClickListener {
+            searchHistoryData.clearHistory()
+            searchHistoryLayout.visibility = View.GONE
+        }
+
         errorIcon = findViewById<ImageView>(R.id.searchErrorIcon)
         errorText = findViewById<TextView>(R.id.searchErrorText)
         errorRefreshBut = findViewById<Button>(R.id.searchErrorBut)
@@ -124,9 +153,11 @@ class SearchActivity : AppCompatActivity() {
             errorIcon.visibility = View.GONE
             errorRefreshBut.visibility = View.GONE
             errorText.visibility = View.GONE
-            trackArrayList.clear()
-            tracksAdapter.notifyDataSetChanged()
-            searchTracks.visibility = View.VISIBLE
+            searchedTracksArrayList.clear()
+            searchedTracksAdapter.notifyDataSetChanged()
+            searchedTracks.visibility = View.GONE
+            searchHistoryData.setArray()
+            searchHistoryAdapter.notifyDataSetChanged()
         }
 
         val textListener = object : TextWatcher {
@@ -136,6 +167,8 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 emptySearchBut.visibility = emptyButVisibility(s)
+                val newData = searchHistoryData.jsonToArrayList(searchHistoryData.getSharedPrefs(KEY_SEARCH_HISTORY_LIST))
+                searchHistoryLayout.visibility = if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !newData.isNullOrEmpty()) View.VISIBLE else View.GONE
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -144,16 +177,20 @@ class SearchActivity : AppCompatActivity() {
         }
         inputSearch.addTextChangedListener(textListener)
 
-        searchTracks = findViewById<RecyclerView>(R.id.tracksSearchRV)
-        searchTracks.layoutManager = LinearLayoutManager(this@SearchActivity)
+        inputSearch.setOnFocusChangeListener{view, hasFocus ->
+            val newData = searchHistoryData.jsonToArrayList(searchHistoryData.getSharedPrefs(KEY_SEARCH_HISTORY_LIST))
+            searchHistoryLayout.visibility = if (hasFocus && inputSearch.text.isEmpty() && !newData.isNullOrEmpty()) View.VISIBLE else View.GONE
+        }
 
-        tracksAdapter = TrackAdapter(trackArrayList)
-        searchTracks.adapter =  tracksAdapter
+        searchedTracks = findViewById<RecyclerView>(R.id.tracksSearchRV)
+        searchedTracks.layoutManager = LinearLayoutManager(this@SearchActivity)
+
+        searchedTracksAdapter = SearchedTracksAdapter(searchedTracksArrayList, searchHistoryData)
+        searchedTracks.adapter = searchedTracksAdapter
 
         inputSearch.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
-                // ВЫПОЛНЯЙТЕ ПОИСКОВЫЙ ЗАПРОС ЗДЕСЬ
                 searchTracks(inputSearch.text.toString())
                 true
             }
@@ -162,6 +199,11 @@ class SearchActivity : AppCompatActivity() {
 
         errorRefreshBut.setOnClickListener{
             searchTracks(inputSearch.text.toString())
+        }
+
+        val backBut = findViewById<ImageView>(R.id.buttonBack)
+        backBut.setOnClickListener {
+            onBackPressed()
         }
 
     }
