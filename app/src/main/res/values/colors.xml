@@ -7,8 +7,6 @@
     <color name="gray">#AEAFB4</color>
     <color name="light_gray">#E6E8EB</color>
     <color name="blue_light">#9FBBF3</color>
-    <color name="thumb_tint_settings">#AEAFB4</color>
-    <color name="track_tint_settings">#E6E8EB</color>
     <color name="settings_icon">#AEAFB4</color>
     <color name="main_screen_color">#3772E7</color>
     <color name="screen_color">#FFFFFF</color>
@@ -20,4 +18,6 @@
     <color name="track_name">#1A1B22</color>
     <color name="track_info">#AEAFB4</color>
     <color name="search_error">#1A1B22</color>
+    <color name="player_main">#1A1B22</color>
+    <color name="playlist_buttons_player">#401A1B22</color>
 </resources>

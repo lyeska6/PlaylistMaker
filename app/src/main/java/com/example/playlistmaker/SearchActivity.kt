@@ -14,22 +14,16 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.transition.Visibility
 import com.bumptech.glide.Glide
-import com.google.gson.Gson
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.security.Key
 
 class SearchActivity : AppCompatActivity() {
 
@@ -121,7 +115,7 @@ class SearchActivity : AppCompatActivity() {
         val sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
         val searchHistoryData = SearchHistory(sharedPrefs)
         searchHistoryData.setArray()
-        val searchHistoryAdapter = SearchHistoryAdapter(sharedPrefs, searchHistoryData)
+        val searchHistoryAdapter = SearchHistoryAdapter(this, searchHistoryData)
         searchHistoryRV.adapter = searchHistoryAdapter
 
         listener = SharedPreferences.OnSharedPreferenceChangeListener{ sharedPreferences, key ->
@@ -185,7 +179,7 @@ class SearchActivity : AppCompatActivity() {
         searchedTracks = findViewById<RecyclerView>(R.id.tracksSearchRV)
         searchedTracks.layoutManager = LinearLayoutManager(this@SearchActivity)
 
-        searchedTracksAdapter = SearchedTracksAdapter(searchedTracksArrayList, searchHistoryData)
+        searchedTracksAdapter = SearchedTracksAdapter(this, searchedTracksArrayList, searchHistoryData)
         searchedTracks.adapter = searchedTracksAdapter
 
         inputSearch.setOnEditorActionListener { _, actionId, _ ->
