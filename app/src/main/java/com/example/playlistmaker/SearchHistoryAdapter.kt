@@ -1,12 +1,16 @@
 package com.example.playlistmaker
 
+import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 
-class SearchHistoryAdapter(val sharedPrefs : SharedPreferences, val searchHistory: SearchHistory): RecyclerView.Adapter<TrackViewHolder>() {
+class SearchHistoryAdapter(val context: Context, val searchHistory: SearchHistory): RecyclerView.Adapter<TrackViewHolder>() {
 
     lateinit var listener : SharedPreferences.OnSharedPreferenceChangeListener
 
@@ -27,11 +31,16 @@ class SearchHistoryAdapter(val sharedPrefs : SharedPreferences, val searchHistor
                 this.notifyDataSetChanged()
             }
         }
-        sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
+        searchHistory.sharedPrefs.registerOnSharedPreferenceChangeListener(listener)
 
         holder.bind(searchHistory.historyTrackArray[position])
         holder.itemView.setOnClickListener {
+            searchHistory.sharedPrefs.edit()
+                .putString(KEY_CHOSEN_TRACK, Gson().toJson(searchHistory.historyTrackArray[position]))
+                .apply()
+            val playerIntent = Intent(context, AudioplayerActivity::class.java)
             searchHistory.addTrack(searchHistory.historyTrackArray[position])
+            context.startActivity(playerIntent)
         }
     }
 }

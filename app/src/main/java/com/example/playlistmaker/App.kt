@@ -7,6 +7,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 const val SHARED_PREFS = "shared_prefs"
 const val THEME_PREFERENCE_KEY = "dark_theme_is"
 const val KEY_SEARCH_HISTORY_LIST = "search_history_list"
+const val KEY_CHOSEN_TRACK = "chosen_track"
 
 class App : Application() {
 

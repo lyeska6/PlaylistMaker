@@ -23,9 +23,6 @@ class SettingsActivity:  AppCompatActivity() {
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
         themeSwitcher.setChecked(sharedPrefs.getBoolean(THEME_PREFERENCE_KEY, false))
-        //themeSwitcher.isUseMaterialThemeColors = false
-        //themeSwitcher.thumbTintMode= R.color.thumb_tint_settings
-        //themeSwitcher.trackTintList = ContextCompat.getColorStateList(this, R.color.track_tint_settings)
 
         val shareApp = findViewById<ImageView>(R.id.shareApp)
         shareApp.setOnClickListener {
