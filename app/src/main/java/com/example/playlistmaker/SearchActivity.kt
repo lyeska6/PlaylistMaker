@@ -3,6 +3,8 @@ package com.example.playlistmaker
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,6 +15,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -45,59 +48,78 @@ class SearchActivity : AppCompatActivity() {
     lateinit var errorIcon: ImageView
     lateinit var errorText: TextView
     lateinit var errorRefreshBut: Button
+    lateinit var progressBar: ProgressBar
 
     lateinit var listener : SharedPreferences.OnSharedPreferenceChangeListener
 
-    fun searchTracks(text: String){
-        val nothingFoundText = "Ничего не нашлось"
-        val serverConnectionText = "Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
+    fun searchTracks(text: String) {
+        if (text.isNotEmpty()) {
+            searchedTracks.visibility = View.GONE
+            errorIcon.visibility = View.GONE
+            errorRefreshBut.visibility = View.GONE
+            errorText.visibility = View.GONE
+            progressBar.visibility = View.VISIBLE
 
-        tracksSearchService.searchTracks(text)
-            .enqueue(object : Callback<TracksResponse>{
-                override fun onResponse(
-                    call: Call<TracksResponse>,
-                    response: Response<TracksResponse>
-                ) {
-                    if (response.code() == 200) {
-                        if (response.body()?.results.isNullOrEmpty()) {
-                            searchedTracks.visibility = View.GONE
+            val nothingFoundText = "Ничего не нашлось"
+            val serverConnectionText =
+                "Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
+
+            tracksSearchService.searchTracks(text)
+                .enqueue(object : Callback<TracksResponse> {
+                    override fun onResponse(
+                        call: Call<TracksResponse>,
+                        response: Response<TracksResponse>
+                    ) {
+                        progressBar.visibility = View.GONE
+                        if (response.code() == 200) {
                             errorRefreshBut.visibility = View.GONE
-                            Glide.with(applicationContext).load(R.drawable.nothing_found_error).centerInside().into(errorIcon)
-                            errorIcon.visibility = View.VISIBLE
-                            errorText.text = nothingFoundText
-                            errorText.visibility = View.VISIBLE
+                            if (response.body()?.results.isNullOrEmpty()) {
+                                searchedTracks.visibility = View.GONE
+                                Glide.with(applicationContext).load(R.drawable.nothing_found_error)
+                                    .centerInside().into(errorIcon)
+                                errorIcon.visibility = View.VISIBLE
+                                errorText.text = nothingFoundText
+                                errorText.visibility = View.VISIBLE
+                            } else {
+                                errorIcon.visibility = View.GONE
+                                errorText.visibility = View.GONE
+                                searchedTracksArrayList.clear()
+                                searchedTracksArrayList.addAll(response.body()?.results!!)
+                                searchedTracksAdapter.notifyDataSetChanged()
+                                searchedTracks.visibility = View.VISIBLE
+                            }
                         } else {
-                            errorIcon.visibility = View.GONE
-                            errorRefreshBut.visibility = View.GONE
-                            errorText.visibility = View.GONE
-                            searchedTracksArrayList.clear()
-                            searchedTracksArrayList.addAll(response.body()?.results!!)
-                            searchedTracksAdapter.notifyDataSetChanged()
-                            searchedTracks.visibility = View.VISIBLE
+                            searchedTracks.visibility = View.GONE
+                            Glide.with(applicationContext).load(R.drawable.server_connection_error)
+                                .centerInside().into(errorIcon)
+                            errorIcon.visibility = View.VISIBLE
+                            errorText.text = serverConnectionText
+                            errorText.visibility = View.VISIBLE
+                            errorRefreshBut.visibility = View.VISIBLE
                         }
-                    } else {
+                    }
+
+                    override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
+                        Log.d(
+                            "My_LOG",
+                            "Маловероятно, но интернета типо нет или с Api проблемы"
+                        )// та же заглушка проблем с поиском
+                        //"Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
+                        Log.d(
+                            "My_LOG",
+                            "Маловероятно, но интернета типо нет или с Api проблемы"
+                        )// заглушка что проблема с поиском
+                        progressBar.visibility = View.GONE
                         searchedTracks.visibility = View.GONE
-                        Glide.with(applicationContext).load(R.drawable.server_connection_error).centerInside().into(errorIcon)
+                        Glide.with(applicationContext).load(R.drawable.server_connection_error)
+                            .centerInside().into(errorIcon)
                         errorIcon.visibility = View.VISIBLE
                         errorText.text = serverConnectionText
                         errorText.visibility = View.VISIBLE
                         errorRefreshBut.visibility = View.VISIBLE
                     }
-                }
-
-                override fun onFailure(call: Call<TracksResponse>, t: Throwable) {
-                    Log.d("My_LOG", "Маловероятно, но интернета типо нет или с Api проблемы")// та же заглушка проблем с поиском
-                    //"Проблемы со связью\n\nЗагрузка не удалась. Проверьте подключение к интернету"
-                    Log.d("My_LOG", "Маловероятно, но интернета типо нет или с Api проблемы")// заглушка что проблема с поиском
-                    searchedTracks.visibility = View.GONE
-                    Glide.with(applicationContext).load(R.drawable.server_connection_error).centerInside().into(errorIcon)
-                    errorIcon.visibility = View.VISIBLE
-                    errorText.text = serverConnectionText
-                    errorText.visibility = View.VISIBLE
-                    errorRefreshBut.visibility = View.VISIBLE
-                }
-            })
-
+                })
+        }
     }
 
 
@@ -136,6 +158,7 @@ class SearchActivity : AppCompatActivity() {
         errorIcon = findViewById<ImageView>(R.id.searchErrorIcon)
         errorText = findViewById<TextView>(R.id.searchErrorText)
         errorRefreshBut = findViewById<Button>(R.id.searchErrorBut)
+        progressBar = findViewById<ProgressBar>(R.id.progressBar)
 
         val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
@@ -147,11 +170,19 @@ class SearchActivity : AppCompatActivity() {
             errorIcon.visibility = View.GONE
             errorRefreshBut.visibility = View.GONE
             errorText.visibility = View.GONE
-            searchedTracksArrayList.clear()
-            searchedTracksAdapter.notifyDataSetChanged()
             searchedTracks.visibility = View.GONE
             searchHistoryData.setArray()
             searchHistoryAdapter.notifyDataSetChanged()
+        }
+
+        val handler = Handler(Looper.getMainLooper())
+        val searchRunnable = Runnable {
+            inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
+            searchTracks(inputSearch.text.toString())
+        }
+        fun searchDebounce() {
+            handler.removeCallbacks(searchRunnable)
+            handler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
         }
 
         val textListener = object : TextWatcher {
@@ -162,7 +193,12 @@ class SearchActivity : AppCompatActivity() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 emptySearchBut.visibility = emptyButVisibility(s)
                 val newData = searchHistoryData.jsonToArrayList(searchHistoryData.getSharedPrefs(KEY_SEARCH_HISTORY_LIST))
-                searchHistoryLayout.visibility = if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !newData.isNullOrEmpty()) View.VISIBLE else View.GONE
+                if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !newData.isNullOrEmpty()) {
+                    searchHistoryLayout.visibility = View.VISIBLE
+                    searchedTracks.visibility = View.GONE
+                }
+                else {searchHistoryLayout.visibility = View.GONE}
+                searchDebounce()
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -224,5 +260,6 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         const val INPUT_SEARCH = "INPUT_SEARCH"
         const val TEXT_SEARCH = ""
+        private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

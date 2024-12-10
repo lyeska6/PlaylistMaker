@@ -8,7 +8,7 @@ import android.util.Log
 
 const val SEARCH_HISTORY_LENGTH = 10
 
-public class SearchHistory(val sharedPrefs : SharedPreferences) {
+class SearchHistory(val sharedPrefs : SharedPreferences) {
 
     val gson = Gson()
     val emptyArray = arrayListOf<Track>()
