@@ -32,4 +32,6 @@
     <dimen name="text_size_13">13sp</dimen>
     <dimen name="pad_30">30dp</dimen>
     <dimen name="track_name_player_size">22sp</dimen>
+    <dimen name="progressbar_size">44dp</dimen>
+    <dimen name="progressbar_margintop">124dp</dimen>
 </resources>
