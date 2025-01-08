@@ -1,22 +1,26 @@
-package com.example.playlistmaker
+package com.example.playlistmaker.ui.searchPage
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity.MODE_PRIVATE
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
+import com.example.playlistmaker.R
+import com.example.playlistmaker.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.models.Track
+import com.example.playlistmaker.ui.audioplayerPage.AudioplayerActivity
 
-private var isClickAllowed = true
+class SearchedTracksAdapter(
+    val context: Context,
+    val tracks: ArrayList<Track>,
+    val searchHistoryInteractor: SearchHistoryInteractor
+) : RecyclerView.Adapter<TrackViewHolder>() {
 
-private val handler = Handler(Looper.getMainLooper())
+    private var isClickAllowed = true
 
-class SearchedTracksAdapter(val context: Context, val tracks : ArrayList<Track>, val searchHistory: SearchHistory): RecyclerView.Adapter<TrackViewHolder>() {
+    private val handler = Handler(Looper.getMainLooper())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackViewHolder {
         return TrackViewHolder(
@@ -32,18 +36,14 @@ class SearchedTracksAdapter(val context: Context, val tracks : ArrayList<Track>,
         holder.bind(tracks[position])
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
-                searchHistory.sharedPrefs.edit()
-                    .putString(KEY_CHOSEN_TRACK, Gson().toJson(tracks[position]))
-                    .apply()
                 val playerIntent = Intent(context, AudioplayerActivity::class.java)
-                searchHistory.addTrack(tracks[position])
-                searchHistory.setArray()
+                searchHistoryInteractor.addTrack(tracks[position])
                 context.startActivity(playerIntent)
             }
         }
     }
 
-    private fun clickDebounce() : Boolean {
+    private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
             isClickAllowed = false
