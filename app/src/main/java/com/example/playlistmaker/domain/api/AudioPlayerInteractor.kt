@@ -8,15 +8,11 @@ interface AudioPlayerInteractor {
 
     fun preparePlayer(track: Track, preparedConsumer: Consumer, completionConsumer: Consumer)
 
-    fun startPlayer(consumer: Consumer)
-
-    fun pausePlayer(consumer: Consumer)
-
     fun getCurrentTiming(): Int
 
     fun releasePlayer()
 
-    fun clickPlayButton(pauseConsumer: Consumer, startConsumer: Consumer)
+    fun startOrPausePlayer(pauseConsumer: Consumer, startConsumer: Consumer)
 
     interface Consumer {
         fun consume()

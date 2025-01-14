@@ -3,14 +3,17 @@ package com.example.playlistmaker
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.playlistmaker.data.SharedPrefsRepositoryImpl
+import android.media.MediaPlayer
+import com.example.playlistmaker.data.ChangeThemeRepositoryImpl
+import com.example.playlistmaker.data.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.TracksRepositoryImpl
 import com.example.playlistmaker.data.network.RetrofitNetworkClient
 import com.example.playlistmaker.data.network.SharedPrefsClient
 import com.example.playlistmaker.domain.api.AudioPlayerInteractor
+import com.example.playlistmaker.domain.api.ChangeThemeRepository
 import com.example.playlistmaker.domain.api.DarkThemeInteractor
 import com.example.playlistmaker.domain.api.SearchHistoryInteractor
-import com.example.playlistmaker.domain.api.SharedPrefsRepository
+import com.example.playlistmaker.domain.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.api.TracksInteractor
 import com.example.playlistmaker.domain.api.TracksRepository
 import com.example.playlistmaker.domain.impl.AudioPlayerInteractorImpl
@@ -29,16 +32,24 @@ object Creator {
         return application.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
     }
 
-    private fun getSharedPrefsRepository(): SharedPrefsRepository {
-        return SharedPrefsRepositoryImpl(SharedPrefsClient())
+    fun getMediaPlayer(): MediaPlayer {
+        return MediaPlayer()
     }
 
-    fun provideDarkThemeInteractor(): DarkThemeInteractor {
-        return DarkThemeInteractorImpl(getSharedPrefsRepository())
+    private fun getSearchHistoryRepository(): SearchHistoryRepository {
+        return SearchHistoryRepositoryImpl(SharedPrefsClient())
     }
 
     fun provideSearchHistoryInteractor(): SearchHistoryInteractor {
-        return SearchHistoryInteractorImpl(getSharedPrefsRepository())
+        return SearchHistoryInteractorImpl(getSearchHistoryRepository())
+    }
+
+    private fun getChangeThemeRepository(): ChangeThemeRepository {
+        return ChangeThemeRepositoryImpl(SharedPrefsClient())
+    }
+
+    fun provideDarkThemeInteractor(): DarkThemeInteractor {
+        return DarkThemeInteractorImpl(getChangeThemeRepository())
     }
 
     private fun getTracksRepository(): TracksRepository {
@@ -50,6 +61,6 @@ object Creator {
     }
 
     fun provideAudioPlayerInteractor(): AudioPlayerInteractor {
-        return AudioPlayerInteractorImpl(getSharedPrefsRepository())
+        return AudioPlayerInteractorImpl(getSearchHistoryRepository())
     }
 }

@@ -8,12 +8,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.api.SearchHistoryInteractor
+import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.ui.audioplayerPage.AudioplayerActivity
 
 class SearchHistoryAdapter(
-    val context: Context,
-    val searchHistoryInteractor: SearchHistoryInteractor
+    private val context: Context,
+    val getSearchHistory: () -> ArrayList<Track>,
+    val addTrack: (Track) -> Unit
 ) :
     RecyclerView.Adapter<TrackViewHolder>() {
 
@@ -28,15 +29,15 @@ class SearchHistoryAdapter(
     }
 
     override fun getItemCount(): Int {
-        return searchHistoryInteractor.getSearchHistory().size
+        return getSearchHistory().size
     }
 
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
-        holder.bind(searchHistoryInteractor.getSearchHistory()[position])
+        holder.bind(getSearchHistory()[position])
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 val playerIntent = Intent(context, AudioplayerActivity::class.java)
-                searchHistoryInteractor.addTrack(searchHistoryInteractor.getSearchHistory()[position])
+                addTrack(getSearchHistory()[position])
                 this.notifyDataSetChanged()
                 context.startActivity(playerIntent)
             }

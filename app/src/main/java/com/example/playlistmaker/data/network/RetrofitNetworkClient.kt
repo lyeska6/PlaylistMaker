@@ -15,7 +15,7 @@ class RetrofitNetworkClient : NetworkClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val itunesService = retrofit.create(ITunesApi::class.java)
+    private val itunesService = retrofit.create(ITunesApi::class.java)
 
     override fun doRequest(dto: Any): Response {
         if (dto is TracksSearchRequest) {

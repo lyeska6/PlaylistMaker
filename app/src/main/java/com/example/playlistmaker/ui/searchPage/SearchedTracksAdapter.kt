@@ -8,14 +8,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlistmaker.R
-import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.models.Track
 import com.example.playlistmaker.ui.audioplayerPage.AudioplayerActivity
 
 class SearchedTracksAdapter(
-    val context: Context,
-    val tracks: ArrayList<Track>,
-    val searchHistoryInteractor: SearchHistoryInteractor
+    private val context: Context,
+    private val tracks: ArrayList<Track>,
+    val addTrack: (Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     private var isClickAllowed = true
@@ -37,7 +36,7 @@ class SearchedTracksAdapter(
         holder.itemView.setOnClickListener {
             if (clickDebounce()) {
                 val playerIntent = Intent(context, AudioplayerActivity::class.java)
-                searchHistoryInteractor.addTrack(tracks[position])
+                addTrack(tracks[position])
                 context.startActivity(playerIntent)
             }
         }

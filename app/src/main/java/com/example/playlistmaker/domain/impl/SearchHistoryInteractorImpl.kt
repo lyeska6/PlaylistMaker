@@ -2,30 +2,24 @@ package com.example.playlistmaker.domain.impl
 
 import com.google.gson.Gson
 import com.example.playlistmaker.domain.api.SearchHistoryInteractor
-import com.example.playlistmaker.domain.api.SharedPrefsRepository
+import com.example.playlistmaker.domain.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.models.Track
 
-const val SEARCH_HISTORY_LENGTH = 10
-
-class SearchHistoryInteractorImpl(val repository: SharedPrefsRepository) : SearchHistoryInteractor {
+class SearchHistoryInteractorImpl(val repository: SearchHistoryRepository) : SearchHistoryInteractor {
 
     val gson = Gson()
     val emptyArray = arrayListOf<Track>()
     val jsonEmptyArray = arrayListToJson(emptyArray)
-    private val jsonHistoryTrackArray = repository.getSearchHistory(jsonEmptyArray)
-    var historyTrackArray = jsonToArrayList(jsonHistoryTrackArray)
-
-    override fun setSearchHistory() {
-        historyTrackArray = jsonToArrayList(repository.getSearchHistory(jsonEmptyArray))
-    }
 
     override fun getSearchHistory(): ArrayList<Track> {
-        return historyTrackArray
+        return jsonToArrayList(repository.getSearchHistory(jsonEmptyArray))
     }
 
     override fun addTrack(track: Track) {
         val jsonTrack = gson.toJson(track)
         repository.setChosenTrack(jsonTrack)
+
+        var historyTrackArray = getSearchHistory()
 
         if (!historyTrackArray.isNullOrEmpty()) {
             val idList = arrayListOf<String>()
@@ -44,19 +38,23 @@ class SearchHistoryInteractorImpl(val repository: SharedPrefsRepository) : Searc
         }
 
         val json = arrayListToJson(historyTrackArray)
-        historyTrackArray = jsonToArrayList(repository.setSearchHistory(json))
+        repository.setSearchHistory(json)
     }
 
     override fun clearHistory() {
-        historyTrackArray = emptyArray
         repository.setSearchHistory(jsonEmptyArray)
     }
 
-    override fun arrayListToJson(arrayList: ArrayList<Track>): String {
+    override fun isSearchHistoryNullOrEmpty(): Boolean {
+        val currentSearchHistory = jsonToArrayList(repository.getSearchHistory(jsonEmptyArray))
+        return currentSearchHistory.isNullOrEmpty()
+    }
+
+    private fun arrayListToJson(arrayList: ArrayList<Track>): String {
         return gson.toJson(arrayList.toTypedArray())
     }
 
-    override fun jsonToArrayList(json: String): ArrayList<Track> {
+    private fun jsonToArrayList(json: String): ArrayList<Track> {
         return ArrayList(
             gson.fromJson(
                 json,
@@ -65,8 +63,7 @@ class SearchHistoryInteractorImpl(val repository: SharedPrefsRepository) : Searc
         )
     }
 
-    override fun isSearchHistoryNullOrEmpty(): Boolean {
-        val currentSearchHistory = jsonToArrayList(repository.getSearchHistory(jsonEmptyArray))
-        return currentSearchHistory.isNullOrEmpty()
+    companion object {
+        const val SEARCH_HISTORY_LENGTH = 10
     }
 }

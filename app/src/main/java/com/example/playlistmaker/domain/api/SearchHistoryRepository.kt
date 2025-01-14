@@ -1,12 +1,8 @@
 package com.example.playlistmaker.domain.api
 
-import com.example.playlistmaker.domain.models.DarkThemeState
 import com.example.playlistmaker.domain.models.Track
 
-interface SharedPrefsRepository {
-    fun changeTheme(darkThemeEnabled: Boolean): DarkThemeState
-
-    fun getTheme(): DarkThemeState
+interface SearchHistoryRepository {
 
     fun getSearchHistory(elseString: String): String
 

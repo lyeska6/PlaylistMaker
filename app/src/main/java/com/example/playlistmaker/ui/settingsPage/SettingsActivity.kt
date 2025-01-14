@@ -16,7 +16,7 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
 
-    val darkThemeInteractor = Creator.provideDarkThemeInteractor()
+    private val darkThemeInteractor = Creator.provideDarkThemeInteractor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +26,7 @@ class SettingsActivity : AppCompatActivity() {
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
         themeSwitcher.setChecked(darkThemeInteractor.getTheme().currentState)
 
-        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+        themeSwitcher.setOnCheckedChangeListener { _, checked ->
             darkThemeInteractor.changeTheme(
                 checked,
                 object : DarkThemeInteractor.ChangeThemeConsumer {

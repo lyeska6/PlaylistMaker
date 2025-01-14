@@ -27,6 +27,18 @@ class AudioplayerActivity : AppCompatActivity() {
 
     val audioPlayerInteractor = Creator.provideAudioPlayerInteractor()
 
+    private val pauseConsumer = object : AudioPlayerInteractor.Consumer {
+        override fun consume() {
+            pausePlayerView()
+        }
+    }
+
+    private val startConsumer = object : AudioPlayerInteractor.Consumer {
+        override fun consume() {
+            startPlayerView()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_audioplayer)
@@ -41,17 +53,14 @@ class AudioplayerActivity : AppCompatActivity() {
 
         fun dpToPx(dp: Float, context: Context): Int {
             return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                context.resources.displayMetrics
+                TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics
             ).toInt()
         }
 
         val trackCoverView = findViewById<ImageView>(R.id.trackCoverView)
         Glide.with(this).load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
             .transform(RoundedCorners(dpToPx(8F, this)))
-            .placeholder(R.drawable.big_placeholder_trackcover)
-            .into(trackCoverView)
+            .placeholder(R.drawable.big_placeholder_trackcover).into(trackCoverView)
 
         val trackNameView = findViewById<TextView>(R.id.trackName)
         trackNameView.text = track.trackName
@@ -82,7 +91,8 @@ class AudioplayerActivity : AppCompatActivity() {
                 override fun consume() {
                     playButton.isEnabled = true
                 }
-            }, completionConsumer = object : AudioPlayerInteractor.Consumer {
+            },
+            completionConsumer = object : AudioPlayerInteractor.Consumer {
                 override fun consume() {
                     playButton.setImageResource(R.drawable.play_button)
                     mainHandler.removeCallbacks(setTimingRunnable)
@@ -91,16 +101,7 @@ class AudioplayerActivity : AppCompatActivity() {
             })
 
         playButton.setOnClickListener {
-            audioPlayerInteractor.clickPlayButton(pauseConsumer = object :
-                AudioPlayerInteractor.Consumer {
-                override fun consume() {
-                    pausePlayerView()
-                }
-            }, startConsumer = object : AudioPlayerInteractor.Consumer {
-                override fun consume() {
-                    startPlayerView()
-                }
-            })
+            audioPlayerInteractor.startOrPausePlayer(pauseConsumer, startConsumer)
         }
 
         currentTiming = findViewById<TextView>(R.id.currentTiming)
@@ -109,11 +110,7 @@ class AudioplayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        audioPlayerInteractor.pausePlayer(consumer = object : AudioPlayerInteractor.Consumer {
-            override fun consume() {
-                pausePlayerView()
-            }
-        })
+        audioPlayerInteractor.startOrPausePlayer(pauseConsumer, startConsumer)
     }
 
     override fun onDestroy() {
@@ -134,8 +131,7 @@ class AudioplayerActivity : AppCompatActivity() {
 
     private fun setCurrentTiming() {
         val time = SimpleDateFormat(
-            "mm:ss",
-            Locale.getDefault()
+            "mm:ss", Locale.getDefault()
         ).format(audioPlayerInteractor.getCurrentTiming())
         currentTiming.text = time
         mainHandler.postDelayed(setTimingRunnable, 300L)

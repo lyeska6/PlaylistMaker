@@ -17,6 +17,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -29,19 +30,19 @@ class SearchActivity : AppCompatActivity() {
 
     private var textSearch: String = TEXT_SEARCH
 
-    val handler = Handler(Looper.getMainLooper())
+    private val handler = Handler(Looper.getMainLooper())
 
     private val searchedTracksArrayList = ArrayList<Track>()
-    lateinit var searchedTracksAdapter: SearchedTracksAdapter
+    private lateinit var searchedTracksAdapter: SearchedTracksAdapter
 
-    lateinit var searchedTracks: RecyclerView
-    lateinit var errorIcon: ImageView
-    lateinit var errorText: TextView
-    lateinit var errorRefreshBut: Button
-    lateinit var progressBar: ProgressBar
+    private lateinit var searchedTracks: RecyclerView
+    private lateinit var errorIcon: ImageView
+    private lateinit var errorText: TextView
+    private lateinit var errorRefreshBut: Button
+    private lateinit var progressBar: ProgressBar
 
-    val tracksInteractor = Creator.provideTracksInteractor()
-    val searchHistoryInteractor = Creator.provideSearchHistoryInteractor()
+    private val tracksInteractor = Creator.provideTracksInteractor()
+    private val searchHistoryInteractor = Creator.provideSearchHistoryInteractor()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,15 +55,16 @@ class SearchActivity : AppCompatActivity() {
         val searchHistoryRV = findViewById<RecyclerView>(R.id.searchHistoryRV)
         searchHistoryRV.layoutManager = LinearLayoutManager(this@SearchActivity)
 
-        searchHistoryInteractor.setSearchHistory()
-        val searchHistoryAdapter = SearchHistoryAdapter(this, searchHistoryInteractor)
+        val searchHistoryAdapter = SearchHistoryAdapter(this,
+            { searchHistoryInteractor.getSearchHistory() },
+            { track -> searchHistoryInteractor.addTrack(track) })
         searchHistoryRV.adapter = searchHistoryAdapter
 
         val searchHistoryLayout = findViewById<LinearLayout>(R.id.searchHistoryAll)
         val clearSearchHistoryBut = findViewById<Button>(R.id.clearHistoryBut)
         clearSearchHistoryBut.setOnClickListener {
             searchHistoryInteractor.clearHistory()
-            searchHistoryLayout.visibility = View.GONE
+            searchHistoryLayout.isVisible = false
         }
 
         errorIcon = findViewById(R.id.searchErrorIcon)
@@ -80,51 +82,53 @@ class SearchActivity : AppCompatActivity() {
                 searchedTracksArrayList.clear()
                 searchedTracksArrayList.addAll(foundTracks)
                 searchedTracksAdapter.notifyDataSetChanged()
-                progressBar.visibility = View.GONE
-                searchedTracks.visibility = View.VISIBLE
+                progressBar.isVisible = false
+                searchedTracks.isVisible = true
             }
         }
 
         fun consumeNothingFound() {
             handler.post {
-                progressBar.visibility = View.GONE
-                Glide.with(applicationContext).load(R.drawable.nothing_found_error)
-                    .centerInside().into(errorIcon)
-                errorIcon.visibility = View.VISIBLE
+                progressBar.isVisible = false
+                Glide.with(applicationContext).load(R.drawable.nothing_found_error).centerInside()
+                    .into(errorIcon)
+                errorIcon.isVisible = true
                 errorText.text = getString(R.string.nothing_found_text)
-                errorText.visibility = View.VISIBLE
+                errorText.isVisible = true
             }
         }
 
         fun consumeNetworkError() {
             handler.post {
-                progressBar.visibility = View.GONE
+                progressBar.isVisible = false
                 Glide.with(applicationContext).load(R.drawable.server_connection_error)
                     .centerInside().into(errorIcon)
-                errorIcon.visibility = View.VISIBLE
+                errorIcon.isVisible = true
                 errorText.text = getString(R.string.server_connection_error_text)
-                errorText.visibility = View.VISIBLE
-                errorRefreshBut.visibility = View.VISIBLE
+                errorText.isVisible = true
+                errorRefreshBut.isVisible = true
             }
         }
 
         fun searchTracksByInteractor(text: String) {
             if (text.isNotEmpty()) {
-                searchedTracks.visibility = View.GONE
-                errorIcon.visibility = View.GONE
-                errorRefreshBut.visibility = View.GONE
-                errorText.visibility = View.GONE
-                progressBar.visibility = View.VISIBLE
+                searchedTracks.isVisible = false
+                errorIcon.isVisible = false
+                errorRefreshBut.isVisible = false
+                errorText.isVisible = false
+                progressBar.isVisible = true
                 tracksInteractor.searchTracks(text,
                     foundConsumer = object : TracksInteractor.TracksConsumer {
                         override fun consume(foundTracks: List<Track>) {
                             consumeFoundTracks(foundTracks)
                         }
-                    }, nothingFoundConsumer = object : TracksInteractor.TracksConsumer {
+                    },
+                    nothingFoundConsumer = object : TracksInteractor.TracksConsumer {
                         override fun consume(tracks: List<Track>) {
                             consumeNothingFound()
                         }
-                    }, networkErrorConsumer = object : TracksInteractor.TracksConsumer {
+                    },
+                    networkErrorConsumer = object : TracksInteractor.TracksConsumer {
                         override fun consume(tracks: List<Track>) {
                             consumeNetworkError()
                         }
@@ -146,12 +150,11 @@ class SearchActivity : AppCompatActivity() {
             handler.removeCallbacks(searchRunnable)
             inputSearch.setText("")
             inputMethodManager?.hideSoftInputFromWindow(inputSearch.windowToken, 0)
-            errorIcon.visibility = View.GONE
-            errorRefreshBut.visibility = View.GONE
-            errorText.visibility = View.GONE
-            progressBar.visibility = View.GONE
-            searchedTracks.visibility = View.GONE
-            searchHistoryInteractor.setSearchHistory()
+            errorIcon.isVisible = false
+            errorRefreshBut.isVisible = false
+            errorText.isVisible = false
+            progressBar.isVisible = false
+            searchedTracks.isVisible = false
             searchHistoryAdapter.notifyDataSetChanged()
         }
 
@@ -161,12 +164,12 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                emptySearchBut.visibility = emptyButVisibility(s)
+                emptySearchBut.isVisible = emptyButVisibility(s)
                 if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !searchHistoryInteractor.isSearchHistoryNullOrEmpty()) {
-                    searchHistoryLayout.visibility = View.VISIBLE
-                    searchedTracks.visibility = View.GONE
+                    searchHistoryLayout.isVisible = true
+                    searchedTracks.isVisible = false
                 } else {
-                    searchHistoryLayout.visibility = View.GONE
+                    searchHistoryLayout.isVisible = false
                 }
                 searchDebounce()
             }
@@ -177,16 +180,19 @@ class SearchActivity : AppCompatActivity() {
         }
         inputSearch.addTextChangedListener(textListener)
 
-        inputSearch.setOnFocusChangeListener { view, hasFocus ->
-            searchHistoryLayout.visibility =
-                if (hasFocus && inputSearch.text.isEmpty() && !searchHistoryInteractor.isSearchHistoryNullOrEmpty()) View.VISIBLE else View.GONE
+        inputSearch.setOnFocusChangeListener { _, hasFocus ->
+            searchHistoryLayout.isVisible =
+                hasFocus && inputSearch.text.isEmpty() && !searchHistoryInteractor.isSearchHistoryNullOrEmpty()
         }
 
-        searchedTracks = findViewById<RecyclerView>(R.id.tracksSearchRV)
+        searchedTracks = findViewById(R.id.tracksSearchRV)
         searchedTracks.layoutManager = LinearLayoutManager(this@SearchActivity)
 
-        searchedTracksAdapter =
-            SearchedTracksAdapter(this, searchedTracksArrayList, searchHistoryInteractor)
+        searchedTracksAdapter = SearchedTracksAdapter(this, searchedTracksArrayList) { track ->
+            searchHistoryInteractor.addTrack(
+                track
+            )
+        }
         searchedTracks.adapter = searchedTracksAdapter
 
         inputSearch.setOnEditorActionListener { _, actionId, _ ->
@@ -211,12 +217,8 @@ class SearchActivity : AppCompatActivity() {
 
     }
 
-    private fun emptyButVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+    private fun emptyButVisibility(s: CharSequence?): Boolean {
+        return !s.isNullOrEmpty()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -228,7 +230,6 @@ class SearchActivity : AppCompatActivity() {
         super.onRestoreInstanceState(savedInstanceState)
         textSearch = savedInstanceState.getString(INPUT_SEARCH, TEXT_SEARCH)
     }
-
 
     companion object {
         const val INPUT_SEARCH = "INPUT_SEARCH"

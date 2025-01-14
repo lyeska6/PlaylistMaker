@@ -1,15 +1,15 @@
 package com.example.playlistmaker.domain.impl
 
-import android.media.MediaPlayer
+import com.example.playlistmaker.Creator
 import com.example.playlistmaker.domain.api.AudioPlayerInteractor
-import com.example.playlistmaker.domain.api.SharedPrefsRepository
+import com.example.playlistmaker.domain.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.models.Track
 
 class AudioPlayerInteractorImpl(
-    val repository: SharedPrefsRepository
+    val repository: SearchHistoryRepository
 ) : AudioPlayerInteractor {
 
-    private val player = MediaPlayer()
+    private val player = Creator.getMediaPlayer()
     private var playerState = STATE_DEFAULT
 
     override fun getTrack(): Track {
@@ -33,18 +33,6 @@ class AudioPlayerInteractorImpl(
         }
     }
 
-    override fun startPlayer(consumer: AudioPlayerInteractor.Consumer) {
-        player.start()
-        playerState = STATE_PLAYING
-        consumer.consume()
-    }
-
-    override fun pausePlayer(consumer: AudioPlayerInteractor.Consumer) {
-        player.pause()
-        playerState = STATE_PAUSED
-        consumer.consume()
-    }
-
     override fun getCurrentTiming(): Int {
         return player.currentPosition
     }
@@ -53,7 +41,7 @@ class AudioPlayerInteractorImpl(
         player.release()
     }
 
-    override fun clickPlayButton(
+    override fun startOrPausePlayer(
         pauseConsumer: AudioPlayerInteractor.Consumer,
         startConsumer: AudioPlayerInteractor.Consumer
     ) {
@@ -62,6 +50,18 @@ class AudioPlayerInteractorImpl(
             STATE_PREPARED,
             STATE_PAUSED -> startPlayer(startConsumer)
         }
+    }
+
+    private fun startPlayer(consumer: AudioPlayerInteractor.Consumer) {
+        player.start()
+        playerState = STATE_PLAYING
+        consumer.consume()
+    }
+
+    private fun pausePlayer(consumer: AudioPlayerInteractor.Consumer) {
+        player.pause()
+        playerState = STATE_PAUSED
+        consumer.consume()
     }
 
     companion object {
