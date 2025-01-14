@@ -165,7 +165,7 @@ class SearchActivity : AppCompatActivity() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 emptySearchBut.isVisible = emptyButVisibility(s)
-                if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !searchHistoryInteractor.isSearchHistoryNullOrEmpty()) {
+                if (inputSearch.hasFocus() && inputSearch.text.isEmpty() && !searchHistoryInteractor.getSearchHistory().isNullOrEmpty()) {
                     searchHistoryLayout.isVisible = true
                     searchedTracks.isVisible = false
                 } else {
@@ -182,7 +182,7 @@ class SearchActivity : AppCompatActivity() {
 
         inputSearch.setOnFocusChangeListener { _, hasFocus ->
             searchHistoryLayout.isVisible =
-                hasFocus && inputSearch.text.isEmpty() && !searchHistoryInteractor.isSearchHistoryNullOrEmpty()
+                hasFocus && inputSearch.text.isEmpty() && !searchHistoryInteractor.getSearchHistory().isNullOrEmpty()
         }
 
         searchedTracks = findViewById(R.id.tracksSearchRV)

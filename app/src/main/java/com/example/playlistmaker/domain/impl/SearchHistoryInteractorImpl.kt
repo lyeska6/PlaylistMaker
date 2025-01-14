@@ -45,11 +45,6 @@ class SearchHistoryInteractorImpl(val repository: SearchHistoryRepository) : Sea
         repository.setSearchHistory(jsonEmptyArray)
     }
 
-    override fun isSearchHistoryNullOrEmpty(): Boolean {
-        val currentSearchHistory = jsonToArrayList(repository.getSearchHistory(jsonEmptyArray))
-        return currentSearchHistory.isNullOrEmpty()
-    }
-
     private fun arrayListToJson(arrayList: ArrayList<Track>): String {
         return gson.toJson(arrayList.toTypedArray())
     }

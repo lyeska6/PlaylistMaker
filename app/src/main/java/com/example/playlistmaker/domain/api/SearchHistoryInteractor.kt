@@ -9,6 +9,4 @@ interface SearchHistoryInteractor {
     fun addTrack(track: Track)
 
     fun clearHistory()
-
-    fun isSearchHistoryNullOrEmpty(): Boolean
 }
