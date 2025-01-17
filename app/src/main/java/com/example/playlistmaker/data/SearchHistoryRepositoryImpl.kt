@@ -10,23 +10,26 @@ import com.google.gson.Gson
 class SearchHistoryRepositoryImpl : SearchHistoryRepository {
 
     private val sharedPrefs = Creator.getSharedPrefs()
+    private val gson = Gson()
 
-    override fun getSearchHistory(elseString: String): String {
+    override fun getSearchHistory(elseList: ArrayList<Track>): ArrayList<Track> {
+        val jsonElseList = arrayListToJson(elseList)
         val response = sharedPrefs.getString(
             KEY_SEARCH_HISTORY_LIST,
-            elseString
+            jsonElseList
         ).toString()
-        return response
+        return jsonToArrayList(response)
     }
 
-    override fun setSearchHistory(jsonList: String): String {
+    override fun setSearchHistory(list: ArrayList<Track>) {
+        val jsonList = arrayListToJson(list)
         sharedPrefs.edit()
             .putString(KEY_SEARCH_HISTORY_LIST, jsonList)
             .apply()
-        return jsonList
     }
 
-    override fun setChosenTrack(jsonTrack: String) {
+    override fun setChosenTrack(track: Track) {
+        val jsonTrack = gson.toJson(track, Track::class.java)
         sharedPrefs.edit()
             .putString(KEY_CHOSEN_TRACK, jsonTrack)
             .apply()
@@ -34,6 +37,20 @@ class SearchHistoryRepositoryImpl : SearchHistoryRepository {
 
     override fun getChosenTrack(): Track {
         val jsonTrack = sharedPrefs.getString(KEY_CHOSEN_TRACK, null)
-        return Gson().fromJson(jsonTrack, Track::class.java)
+        return gson.fromJson(jsonTrack, Track::class.java)
+    }
+
+
+    private fun arrayListToJson(arrayList: ArrayList<Track>): String {
+        return gson.toJson(arrayList.toTypedArray())
+    }
+
+    private fun jsonToArrayList(json: String): ArrayList<Track> {
+        return ArrayList(
+            gson.fromJson(
+                json,
+                Array<Track>::class.java
+            ).asList()
+        )
     }
 }

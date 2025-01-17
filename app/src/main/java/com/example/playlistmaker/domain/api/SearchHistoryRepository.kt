@@ -4,11 +4,11 @@ import com.example.playlistmaker.domain.models.Track
 
 interface SearchHistoryRepository {
 
-    fun getSearchHistory(elseString: String): String
+    fun getSearchHistory(elseList: ArrayList<Track>): ArrayList<Track>
 
-    fun setSearchHistory(jsonList: String): String
+    fun setSearchHistory(list: ArrayList<Track>)
 
-    fun setChosenTrack(jsonTrack: String)
+    fun setChosenTrack(track: Track)
 
     fun getChosenTrack(): Track
 }

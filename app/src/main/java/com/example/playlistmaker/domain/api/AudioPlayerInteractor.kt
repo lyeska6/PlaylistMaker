@@ -14,6 +14,8 @@ interface AudioPlayerInteractor {
 
     fun startOrPausePlayer(pauseConsumer: Consumer, startConsumer: Consumer)
 
+    fun pausePlayer(pauseConsumer: Consumer)
+
     interface Consumer {
         fun consume()
     }

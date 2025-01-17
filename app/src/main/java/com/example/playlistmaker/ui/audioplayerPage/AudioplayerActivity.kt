@@ -25,7 +25,7 @@ class AudioplayerActivity : AppCompatActivity() {
     private lateinit var currentTiming: TextView
     private lateinit var setTimingRunnable: Runnable
 
-    val audioPlayerInteractor = Creator.provideAudioPlayerInteractor()
+    private val audioPlayerInteractor = Creator.provideAudioPlayerInteractor()
 
     private val pauseConsumer = object : AudioPlayerInteractor.Consumer {
         override fun consume() {
@@ -110,7 +110,7 @@ class AudioplayerActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        audioPlayerInteractor.startOrPausePlayer(pauseConsumer, startConsumer)
+        audioPlayerInteractor.pausePlayer(pauseConsumer)
     }
 
     override fun onDestroy() {

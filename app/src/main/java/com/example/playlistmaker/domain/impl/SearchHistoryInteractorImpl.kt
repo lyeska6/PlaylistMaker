@@ -5,19 +5,16 @@ import com.example.playlistmaker.domain.api.SearchHistoryInteractor
 import com.example.playlistmaker.domain.api.SearchHistoryRepository
 import com.example.playlistmaker.domain.models.Track
 
-class SearchHistoryInteractorImpl(val repository: SearchHistoryRepository) : SearchHistoryInteractor {
+class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) : SearchHistoryInteractor {
 
-    val gson = Gson()
-    val emptyArray = arrayListOf<Track>()
-    val jsonEmptyArray = arrayListToJson(emptyArray)
+    private val emptyArray = arrayListOf<Track>()
 
     override fun getSearchHistory(): ArrayList<Track> {
-        return jsonToArrayList(repository.getSearchHistory(jsonEmptyArray))
+        return repository.getSearchHistory(emptyArray)
     }
 
     override fun addTrack(track: Track) {
-        val jsonTrack = gson.toJson(track)
-        repository.setChosenTrack(jsonTrack)
+        repository.setChosenTrack(track)
 
         var historyTrackArray = getSearchHistory()
 
@@ -37,25 +34,11 @@ class SearchHistoryInteractorImpl(val repository: SearchHistoryRepository) : Sea
             historyTrackArray = arrayListOf(track)
         }
 
-        val json = arrayListToJson(historyTrackArray)
-        repository.setSearchHistory(json)
+        repository.setSearchHistory(historyTrackArray)
     }
 
     override fun clearHistory() {
-        repository.setSearchHistory(jsonEmptyArray)
-    }
-
-    private fun arrayListToJson(arrayList: ArrayList<Track>): String {
-        return gson.toJson(arrayList.toTypedArray())
-    }
-
-    private fun jsonToArrayList(json: String): ArrayList<Track> {
-        return ArrayList(
-            gson.fromJson(
-                json,
-                Array<Track>::class.java
-            ).asList()
-        )
+        repository.setSearchHistory(emptyArray)
     }
 
     companion object {

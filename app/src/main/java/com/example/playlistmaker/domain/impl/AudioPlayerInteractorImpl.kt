@@ -58,10 +58,10 @@ class AudioPlayerInteractorImpl(
         consumer.consume()
     }
 
-    private fun pausePlayer(consumer: AudioPlayerInteractor.Consumer) {
+    override fun pausePlayer(pauseConsumer: AudioPlayerInteractor.Consumer) {
         player.pause()
         playerState = STATE_PAUSED
-        consumer.consume()
+        pauseConsumer.consume()
     }
 
     companion object {
