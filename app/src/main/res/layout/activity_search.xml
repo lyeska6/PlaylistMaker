@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/LinearLayoutScreen"
     android:background="@color/screen_color"
-    tools:context=".SearchActivity">
+    tools:context=".ui.searchPage.SearchActivity">
 
     <FrameLayout
         style="@style/HeadingFrameLayout">
