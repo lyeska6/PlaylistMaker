@@ -126,39 +126,39 @@
         android:id="@+id/playerCountryIndex"
         style="@style/AudioplayerInfoIndex"
         android:text="@string/player_country"
-        app:layout_constraintBaseline_toBaselineOf="@+id/playerCountry"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trackCountry"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/playerGenreIndex"
         style="@style/AudioplayerInfoIndex"
         android:text="@string/player_genre"
-        app:layout_constraintBaseline_toBaselineOf="@+id/playerGenre"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trackGenre"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/playerYearIndex"
         style="@style/AudioplayerInfoIndex"
         android:text="@string/player_year"
-        app:layout_constraintBaseline_toBaselineOf="@+id/playerYear"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trackYear"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/playerAlbumIndex"
         style="@style/AudioplayerInfoIndex"
         android:text="@string/player_album"
-        app:layout_constraintBaseline_toBaselineOf="@+id/playerAlbum"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trackAlbum"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/playerDurationIndex"
         style="@style/AudioplayerInfoIndex"
         android:text="@string/player_duration"
-        app:layout_constraintBaseline_toBaselineOf="@+id/playerDuration"
+        app:layout_constraintBaseline_toBaselineOf="@+id/trackDuration"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
-        android:id="@+id/playerCountry"
+        android:id="@+id/trackCountry"
         style="@style/AudioplayerInfo"
         tool:text="Великобритания"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -169,40 +169,40 @@
         app:layout_constrainedWidth="true"/>
 
     <TextView
-        android:id="@+id/playerGenre"
+        android:id="@+id/trackGenre"
         style="@style/AudioplayerInfo"
         tool:text="Рок"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/playerCountry"
+        app:layout_constraintBottom_toTopOf="@id/trackCountry"
         app:layout_constraintStart_toEndOf="@id/playerGenreIndex"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constrainedWidth="true"/>
 
     <TextView
-        android:id="@+id/playerYear"
+        android:id="@+id/trackYear"
         style="@style/AudioplayerInfo"
         tool:text="1998"
-        app:layout_constraintBottom_toTopOf="@id/playerGenre"
+        app:layout_constraintBottom_toTopOf="@id/trackGenre"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/playerYearIndex"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constrainedWidth="true"/>
 
     <TextView
-        android:id="@+id/playerAlbum"
+        android:id="@+id/trackAlbum"
         style="@style/AudioplayerInfo"
         tool:text="Motorhead"
-        app:layout_constraintBottom_toTopOf="@id/playerYear"
+        app:layout_constraintBottom_toTopOf="@id/trackYear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/playerAlbumIndex"
         app:layout_constraintHorizontal_bias="1"
         app:layout_constrainedWidth="true"/>
 
     <TextView
-        android:id="@+id/playerDuration"
+        android:id="@+id/trackDuration"
         style="@style/AudioplayerInfo"
         tool:text="3:53"
-        app:layout_constraintBottom_toTopOf="@id/playerAlbum"
+        app:layout_constraintBottom_toTopOf="@id/trackAlbum"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/playerDurationIndex"
         app:layout_constraintHorizontal_bias="1"
