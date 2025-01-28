@@ -1,5 +1,6 @@
 package com.example.playlistmaker.data.search.impl
 
+import android.content.SharedPreferences
 import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.KEY_CHOSEN_TRACK
 import com.example.playlistmaker.KEY_SEARCH_HISTORY_LIST
@@ -7,10 +8,10 @@ import com.example.playlistmaker.domain.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.model.Track
 import com.google.gson.Gson
 
-class SearchHistoryRepositoryImpl : SearchHistoryRepository {
-
-    private val sharedPrefs = Creator.getSharedPrefs()
-    private val gson = Gson()
+class SearchHistoryRepositoryImpl(
+    private val sharedPrefs: SharedPreferences,
+    private val gson: Gson
+) : SearchHistoryRepository {
 
     override fun getSearchHistory(elseList: ArrayList<Track>): ArrayList<Track> {
         val jsonElseList = arrayListToJson(elseList)

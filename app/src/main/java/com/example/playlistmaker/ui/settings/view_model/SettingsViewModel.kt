@@ -16,7 +16,7 @@ class SettingsViewModel(
     private val settingsInteractor: SettingsInteractor,
 ) : ViewModel() {
 
-    private val darkThemeLiveData = MutableLiveData(settingsInteractor.getThemeSettings().currentState)
+    private val darkThemeLiveData = MutableLiveData(settingsInteractor.getThemeSettings(false).currentState)
 
     fun getDarkThemeLiveData(): LiveData<Boolean> = darkThemeLiveData
 

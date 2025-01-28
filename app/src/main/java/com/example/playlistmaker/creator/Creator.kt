@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.media.MediaPlayer
 import com.example.playlistmaker.SHARED_PREFS
+import com.example.playlistmaker.data.player.impl.AudioplayerRepositoryImpl
 import com.example.playlistmaker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
 import com.example.playlistmaker.data.search.impl.TracksRepositoryImpl
 import com.example.playlistmaker.data.search.network.RetrofitNetworkClient
-import com.example.playlistmaker.domain.player.AudioPlayerInteractor
 import com.example.playlistmaker.domain.settings.SettingsRepository
 import com.example.playlistmaker.domain.settings.SettingsInteractor
 import com.example.playlistmaker.domain.search.SearchHistoryInteractor
@@ -20,12 +20,17 @@ import com.example.playlistmaker.domain.sharing.ExternalNavigator
 import com.example.playlistmaker.domain.sharing.SharingRepository
 import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
 import com.example.playlistmaker.data.sharing.impl.SharingRepositoryImpl
-import com.example.playlistmaker.domain.player.impl.AudioPlayerInteractorImpl
+import com.example.playlistmaker.domain.player.AudioplayerInteractor
+import com.example.playlistmaker.domain.player.AudioplayerRepository
+import com.example.playlistmaker.domain.player.GetChosenTrackUseCase
+import com.example.playlistmaker.domain.player.impl.AudioplayerInteractorImpl
+import com.example.playlistmaker.domain.player.impl.GetChosenTrackUseCaseImpl
 import com.example.playlistmaker.domain.settings.impl.SettingsInteractorImpl
 import com.example.playlistmaker.domain.search.impl.SearchHistoryInteractorImpl
 import com.example.playlistmaker.domain.search.impl.TracksInteractorImpl
 import com.example.playlistmaker.domain.sharing.SharingInteractor
 import com.example.playlistmaker.domain.sharing.impl.SharingInteractorImpl
+import com.google.gson.Gson
 
 object Creator {
     private lateinit var application: Application
@@ -34,16 +39,28 @@ object Creator {
         Creator.application = application
     }
 
-    fun getSharedPrefs(): SharedPreferences {
+    private fun getSharedPrefs(): SharedPreferences {
         return application.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE)
     }
 
-    fun getMediaPlayer(): MediaPlayer {
+    private fun getGson(): Gson {
+        return Gson()
+    }
+
+    private fun getMediaPlayer(): MediaPlayer {
         return MediaPlayer()
     }
 
+    private fun getAudioplayerRepository(): AudioplayerRepository{
+        return AudioplayerRepositoryImpl(getMediaPlayer())
+    }
+
+    fun provideAudioplauerInteractor(): AudioplayerInteractor{
+        return AudioplayerInteractorImpl(getAudioplayerRepository())
+    }
+
     private fun getSearchHistoryRepository(): SearchHistoryRepository {
-        return SearchHistoryRepositoryImpl()
+        return SearchHistoryRepositoryImpl(getSharedPrefs(), getGson())
     }
 
     fun provideSearchHistoryInteractor(): SearchHistoryInteractor {
@@ -51,7 +68,7 @@ object Creator {
     }
 
     private fun getSettingsRepository(): SettingsRepository {
-        return SettingsRepositoryImpl()
+        return SettingsRepositoryImpl(getSharedPrefs())
     }
 
     fun provideSettingsInteractor(): SettingsInteractor {
@@ -66,8 +83,8 @@ object Creator {
         return TracksInteractorImpl(getTracksRepository())
     }
 
-    fun provideAudioPlayerInteractor(): AudioPlayerInteractor {
-        return AudioPlayerInteractorImpl(getSearchHistoryRepository())
+    fun provideGetChosenTrackUseCase(): GetChosenTrackUseCase {
+        return GetChosenTrackUseCaseImpl(getSearchHistoryRepository())
     }
 
     private fun getExternalNavigator(): ExternalNavigator {

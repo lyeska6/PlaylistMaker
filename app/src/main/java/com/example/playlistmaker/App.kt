@@ -1,6 +1,9 @@
 package com.example.playlistmaker
 
 import android.app.Application
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.playlistmaker.creator.Creator
 
@@ -18,7 +21,12 @@ class App : Application() {
 
         val settingsInteractor = Creator.provideSettingsInteractor()
 
-        switchTheme(settingsInteractor.getThemeSettings().currentState)
+        switchTheme(settingsInteractor.getThemeSettings(isDarkThemeOn()).currentState)
+    }
+
+    fun isDarkThemeOn(): Boolean {
+        return resources.configuration.uiMode and
+                Configuration.UI_MODE_NIGHT_MASK == UI_MODE_NIGHT_YES
     }
 
     fun switchTheme(darkThemeEnabled: Boolean) {

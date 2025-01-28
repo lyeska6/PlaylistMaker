@@ -1,6 +1,7 @@
 package com.example.playlistmaker.ui.audioplayerPage.view_model
 
-import android.media.MediaPlayer
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,79 +9,96 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.playlistmaker.creator.Creator
-import com.example.playlistmaker.domain.player.AudioPlayerInteractor
+import com.example.playlistmaker.domain.player.AudioplayerInteractor
+import com.example.playlistmaker.domain.player.GetChosenTrackUseCase
 import com.example.playlistmaker.domain.search.model.Track
 
 class AudioplayerViewModel(
-    audioPlayerInteractor: AudioPlayerInteractor
+    getChosenTrackUseCase: GetChosenTrackUseCase,
+    private val audioplayerInteractor: AudioplayerInteractor
 ) : ViewModel() {
 
-    private val trackLiveData = MutableLiveData(audioPlayerInteractor.getTrack())
+    private var mainHandler: Handler = Handler(Looper.getMainLooper())
+    private var setTimingRunnable = Runnable {setCurrentTiming()}
 
-    fun getTrackLiveData(): LiveData<Track> = trackLiveData
-
-    private val player = MediaPlayer()
-
+    private val trackLiveData = MutableLiveData(getChosenTrackUseCase.getTrack())
     private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.StateDefault)
 
+    fun getTrackLiveData(): LiveData<Track> = trackLiveData
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
 
-    fun preparePlayer() {
-        player.setDataSource(trackLiveData.value?.previewUrl)
-        player.prepareAsync()
-        player.setOnPreparedListener {
-            playerStateLiveData.postValue(PlayerState.StatePrepared)
-        }
-        player.setOnCompletionListener {
+    private val prepareConsumer = object: AudioplayerInteractor.Consumer {
+        override fun consume() {
+            mainHandler.removeCallbacks(setTimingRunnable)
             playerStateLiveData.postValue(PlayerState.StatePrepared)
         }
     }
 
-    private val currentTimingLiveData = MutableLiveData(0)
+    fun preparePlayer(track: Track) {
+        audioplayerInteractor.preparePlayer(
+            track,
+            prepareConsumer,
+            prepareConsumer
+        )
+    }
 
-    fun getCurrentTimingLiveData(): LiveData<Int> = currentTimingLiveData
-
-    fun setCurrentTiming() {
-        if (playerStateLiveData.value is PlayerState.StatePrepared || playerStateLiveData.value is PlayerState.StateDefault) {
-            currentTimingLiveData.postValue(0)
-        } else {
-            currentTimingLiveData.postValue(player.currentPosition)
+    private fun setTimingState() {
+        if (playerStateLiveData.value is PlayerState.StatePlaying) {
+            playerStateLiveData.postValue(PlayerState.StatePlaying(audioplayerInteractor.getCurrentTiming()))
+        }
+    }
+    private fun setCurrentTiming() {
+        if (playerStateLiveData.value is PlayerState.StatePlaying) {
+            setTimingState()
+            mainHandler.postDelayed(setTimingRunnable, 300L)
         }
     }
 
     fun pausePlayer() {
-        player.pause()
+        mainHandler.removeCallbacks(setTimingRunnable)
         playerStateLiveData.postValue(PlayerState.StatePaused)
+        audioplayerInteractor.pausePlayer()
     }
 
-    private fun startPlayer() {
-        player.start()
-        playerStateLiveData.postValue(PlayerState.StatePlaying)
+    private fun startPreparedPlayer() {
+        audioplayerInteractor.startPlayer()
+        playerStateLiveData.postValue(PlayerState.StatePlaying(0))
+        mainHandler.postDelayed(setTimingRunnable, 300L)
+    }
+
+    private fun startPausedPlayer() {
+        audioplayerInteractor.startPlayer()
+        playerStateLiveData.postValue(PlayerState.StatePlaying(audioplayerInteractor.getCurrentTiming()))
+        mainHandler.postDelayed(setTimingRunnable, 300L)
     }
 
     fun startOrPausePlayer() {
         when (playerStateLiveData.value) {
             PlayerState.StateDefault,
-            null -> TODO()
-            PlayerState.StatePrepared,
-            PlayerState.StatePaused -> {
-                startPlayer()
+            null -> {}
+            PlayerState.StatePrepared -> {
+                startPreparedPlayer()
             }
-            PlayerState.StatePlaying -> {
+            PlayerState.StatePaused -> {
+                startPausedPlayer()
+            }
+            is PlayerState.StatePlaying -> {
                 pausePlayer()
             }
         }
     }
 
-    fun releasePlayer() {
-        player.release()
+    fun onDestroy() {
+        audioplayerInteractor.releasePlayer()
+        mainHandler.removeCallbacks(setTimingRunnable)
     }
 
     companion object {
         fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 AudioplayerViewModel(
-                    Creator.provideAudioPlayerInteractor()
+                    Creator.provideGetChosenTrackUseCase(),
+                    Creator.provideAudioplauerInteractor()
                 )
             }
         }

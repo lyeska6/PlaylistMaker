@@ -12,8 +12,8 @@ class SettingsInteractorImpl(private val repository: SettingsRepository) : Setti
         repository.updateThemeSettings(settings)
     }
 
-    override fun getThemeSettings(): ThemeSettings {
-        return repository.getThemeSettings()
+    override fun getThemeSettings(elseTheme: Boolean): ThemeSettings {
+        return repository.getThemeSettings(elseTheme)
     }
 
 }

@@ -1,23 +1,29 @@
 package com.example.playlistmaker.data.settings.impl
 
-import com.example.playlistmaker.creator.Creator
+import android.content.SharedPreferences
 import com.example.playlistmaker.THEME_PREFERENCE_KEY
 import com.example.playlistmaker.domain.settings.SettingsRepository
 import com.example.playlistmaker.domain.settings.model.ThemeSettings
 
-class SettingsRepositoryImpl: SettingsRepository {
-
-    private val sharedPrefs = Creator.getSharedPrefs()
+class SettingsRepositoryImpl(
+    private val sharedPrefs: SharedPreferences
+): SettingsRepository {
 
     override fun updateThemeSettings(settings: ThemeSettings) {
         sharedPrefs.edit().putBoolean(THEME_PREFERENCE_KEY, settings.currentState).apply()
     }
 
-    override fun getThemeSettings(): ThemeSettings {
-        val response = sharedPrefs.getBoolean(
-            THEME_PREFERENCE_KEY,
-            false
-        )
-        return ThemeSettings(response)
+    override fun getThemeSettings(elseTheme: Boolean): ThemeSettings {
+        return if (sharedPrefs.contains(THEME_PREFERENCE_KEY)) {
+            ThemeSettings(sharedPrefs.getBoolean(
+                THEME_PREFERENCE_KEY,
+                false)
+            )
+        } else {
+            sharedPrefs.edit()
+                .putBoolean(THEME_PREFERENCE_KEY, elseTheme)
+                .apply()
+            ThemeSettings(elseTheme)
+        }
     }
 }

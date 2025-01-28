@@ -16,12 +16,8 @@ class SearchViewModel(
     private val searchHistoryInteractor: SearchHistoryInteractor
 ): ViewModel() {
 
-    private val searchedTracksLiveData = MutableLiveData(ArrayList<Track>())
-    private val searchHistoryListLiveData = MutableLiveData(searchHistoryInteractor.getSearchHistory())
     private val searchScreenStateLiveData = MutableLiveData<SearchScreenState>(SearchScreenState.Default)
 
-    fun getSearchedTracksLiveData(): LiveData<ArrayList<Track>> = searchedTracksLiveData
-    fun getSearchHistoryListLiveData(): LiveData<ArrayList<Track>> = searchHistoryListLiveData
     fun getSearchScreenStateLiveData(): LiveData<SearchScreenState> = searchScreenStateLiveData
 
     fun search(text: String) {
@@ -29,59 +25,71 @@ class SearchViewModel(
             SearchScreenState.SearchTracksView(
                 isLoading = true,
                 nothingFound = false,
-                networkError = false
+                networkError = false,
+                tracks = ArrayList()
             )
         )
         tracksInteractor.searchTracks(text,
             foundConsumer = object : TracksInteractor.TracksConsumer {
                 override fun consume(tracks: ArrayList<Track>) {
-                    searchScreenStateLiveData.postValue(
-                        SearchScreenState.SearchTracksView(
-                            isLoading = false,
-                            nothingFound = false,
-                            networkError = false
+                    if (searchScreenStateLiveData.value is SearchScreenState.SearchTracksView) {
+                        searchScreenStateLiveData.postValue(
+                            SearchScreenState.SearchTracksView(
+                                isLoading = false,
+                                nothingFound = false,
+                                networkError = false,
+                                tracks = tracks
+                            )
                         )
-                    )
-                    searchedTracksLiveData.postValue(tracks)
+                    }
                 }
             },
             nothingFoundConsumer = object : TracksInteractor.TracksConsumer {
                 override fun consume(tracks: ArrayList<Track>) {
-                    searchScreenStateLiveData.postValue(
-                        SearchScreenState.SearchTracksView(
-                            isLoading = false,
-                            nothingFound = true,
-                            networkError = false
+                    if (searchScreenStateLiveData.value is SearchScreenState.SearchTracksView) {
+                        searchScreenStateLiveData.postValue(
+                            SearchScreenState.SearchTracksView(
+                                isLoading = false,
+                                nothingFound = true,
+                                networkError = false,
+                                tracks = ArrayList()
+                            )
                         )
-                    )
+                    }
                 }
             },
             networkErrorConsumer = object : TracksInteractor.TracksConsumer {
                 override fun consume(tracks: ArrayList<Track>) {
-                    searchScreenStateLiveData.postValue(
-                        SearchScreenState.SearchTracksView(
-                            isLoading = false,
-                            nothingFound = false,
-                            networkError = true
+                    if (searchScreenStateLiveData.value is SearchScreenState.SearchTracksView) {
+                        searchScreenStateLiveData.postValue(
+                            SearchScreenState.SearchTracksView(
+                                isLoading = false,
+                                nothingFound = false,
+                                networkError = true,
+                                tracks = ArrayList()
+                            )
                         )
-                    )
+                    }
                 }
             })
     }
 
     fun getSearchHistory() {
-        searchHistoryListLiveData.postValue(searchHistoryInteractor.getSearchHistory())
-        searchScreenStateLiveData.postValue(SearchScreenState.SearchHistoryView)
+        if (!searchHistoryInteractor.getSearchHistory().isNullOrEmpty()) {
+            searchScreenStateLiveData.postValue(
+                SearchScreenState.SearchHistoryView(
+                    searchHistoryInteractor.getSearchHistory()
+                )
+            )
+        }
     }
 
     fun addTrackToHistory(track: Track) {
         searchHistoryInteractor.addTrack(track)
-        searchHistoryListLiveData.postValue(searchHistoryInteractor.getSearchHistory())
     }
 
     fun clearHistory() {
         searchHistoryInteractor.clearHistory()
-        searchHistoryListLiveData.postValue(searchHistoryInteractor.getSearchHistory())
         searchScreenStateLiveData.postValue(SearchScreenState.Default)
     }
 

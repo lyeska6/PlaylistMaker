@@ -1,13 +1,12 @@
 package com.example.playlistmaker.domain.player.impl
 
-import com.example.playlistmaker.domain.player.AudioPlayerInteractor
+import com.example.playlistmaker.domain.player.GetChosenTrackUseCase
 import com.example.playlistmaker.domain.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.model.Track
 
-class AudioPlayerInteractorImpl(
+class GetChosenTrackUseCaseImpl(
     private val repository: SearchHistoryRepository
-) : AudioPlayerInteractor {
-
+) : GetChosenTrackUseCase {
     override fun getTrack(): Track {
         return repository.getChosenTrack()
     }
