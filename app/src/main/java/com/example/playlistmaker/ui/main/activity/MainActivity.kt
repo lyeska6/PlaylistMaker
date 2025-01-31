@@ -2,7 +2,6 @@ package com.example.playlistmaker.ui.main.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.playlistmaker.ui.madiatecPage.activity.MediatecActivity
@@ -11,7 +10,7 @@ import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.settings.activity.SettingsActivity
 import com.example.playlistmaker.ui.search.activity.SearchActivity
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -26,8 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.butMedia.setOnClickListener {
-            val mediaIntent: Intent = Intent(this, MediatecActivity::class.java)
-            startActivity(mediaIntent)
+            startActivity(Intent(this, MediatecActivity::class.java))
         }
 
         binding.butSettings.setOnClickListener {

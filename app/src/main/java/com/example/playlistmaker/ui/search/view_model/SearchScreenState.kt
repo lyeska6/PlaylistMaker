@@ -6,7 +6,7 @@ sealed class SearchScreenState {
     data object Default: SearchScreenState()
     data class SearchHistoryView(
         val tracks: ArrayList<Track>
-    ) : SearchScreenState()
+    ): SearchScreenState()
     data class SearchTracksView(
         val isLoading: Boolean,
         val nothingFound: Boolean,

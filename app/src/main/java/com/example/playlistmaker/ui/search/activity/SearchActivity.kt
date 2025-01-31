@@ -5,14 +5,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
+import androidx.core.widget.doAfterTextChanged
+import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
@@ -21,10 +20,11 @@ import com.example.playlistmaker.domain.search.model.Track
 import com.example.playlistmaker.ui.audioplayerPage.activity.AudioplayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchScreenState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchActivity: AppCompatActivity() {
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel by viewModel<SearchViewModel>()
     private lateinit var binding: ActivitySearchBinding
     private val handler = Handler(Looper.getMainLooper())
 
@@ -59,7 +59,6 @@ class SearchActivity : AppCompatActivity() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
         binding.searchInput.setText(textSearch)
 
-        viewModel = ViewModelProvider(this, SearchViewModel.getViewModelFactory())[SearchViewModel::class.java]
         viewModel.getSearchScreenStateLiveData().observe(this){ state ->
             when (state) {
                 SearchScreenState.Default -> {
@@ -107,26 +106,19 @@ class SearchActivity : AppCompatActivity() {
             viewModel.getSearchHistory()
         }
 
-        val textListener = object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                //
+        binding.searchInput.doOnTextChanged { s, _, _, _ ->
+            binding.clearSearchInputBut.isVisible = emptyButVisibility(s)
+            if (binding.searchInput.hasFocus() && s.isNullOrEmpty()) {
+                viewModel.getSearchHistory()
+            } else {
+                consumeDefaultView()
             }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                binding.clearSearchInputBut.isVisible = emptyButVisibility(s)
-                if (binding.searchInput.hasFocus() && s.isNullOrEmpty()) {
-                    viewModel.getSearchHistory()
-                } else {
-                    consumeDefaultView()
-                }
-                searchDebounce()
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                textSearch = s.toString()
-            }
+            searchDebounce()
         }
-        binding.searchInput.addTextChangedListener(textListener)
+
+        binding.searchInput.doAfterTextChanged { s ->
+            textSearch = s.toString()
+        }
 
         binding.searchInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.searchInput.text.isEmpty()) {

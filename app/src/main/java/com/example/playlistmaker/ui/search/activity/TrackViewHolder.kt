@@ -11,7 +11,9 @@ import com.example.playlistmaker.domain.search.model.Track
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class TrackViewHolder(private val binding: ItemTrackBinding) : RecyclerView.ViewHolder(binding.root) {
+class TrackViewHolder(
+    private val binding: ItemTrackBinding
+): RecyclerView.ViewHolder(binding.root) {
 
     private fun dpToPx(dp: Float, context: Context): Int {
         return TypedValue.applyDimension(

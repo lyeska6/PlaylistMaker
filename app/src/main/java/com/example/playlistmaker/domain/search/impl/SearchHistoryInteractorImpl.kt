@@ -4,8 +4,9 @@ import com.example.playlistmaker.domain.search.SearchHistoryInteractor
 import com.example.playlistmaker.domain.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.model.Track
 
-class SearchHistoryInteractorImpl(private val repository: SearchHistoryRepository) :
-    SearchHistoryInteractor {
+class SearchHistoryInteractorImpl(
+    private val repository: SearchHistoryRepository
+): SearchHistoryInteractor {
 
     private val emptyArray = arrayListOf<Track>()
 

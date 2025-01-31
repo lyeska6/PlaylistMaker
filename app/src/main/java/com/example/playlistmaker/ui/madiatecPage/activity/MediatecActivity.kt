@@ -2,10 +2,9 @@ package com.example.playlistmaker.ui.madiatecPage.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMediaBinding
 
-class MediatecActivity : AppCompatActivity() {
+class MediatecActivity: AppCompatActivity() {
 
     private lateinit var binding: ActivityMediaBinding
 

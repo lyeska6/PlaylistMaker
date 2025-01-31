@@ -5,7 +5,9 @@ import com.example.playlistmaker.R
 import com.example.playlistmaker.domain.sharing.SharingRepository
 import com.example.playlistmaker.domain.sharing.model.EmailData
 
-class SharingRepositoryImpl(val context: Context) : SharingRepository {
+class SharingRepositoryImpl(
+    private val context: Context
+) : SharingRepository {
 
     override fun getShareAppLink(): String = context.getString(R.string.course_url)
 
