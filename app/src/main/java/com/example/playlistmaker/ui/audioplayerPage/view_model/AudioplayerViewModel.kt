@@ -5,10 +5,6 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.playlistmaker.creator.Creator
 import com.example.playlistmaker.domain.player.AudioplayerInteractor
 import com.example.playlistmaker.domain.player.GetChosenTrackUseCase
 import com.example.playlistmaker.domain.search.model.Track
@@ -16,7 +12,7 @@ import com.example.playlistmaker.domain.search.model.Track
 class AudioplayerViewModel(
     getChosenTrackUseCase: GetChosenTrackUseCase,
     private val audioplayerInteractor: AudioplayerInteractor
-) : ViewModel() {
+): ViewModel() {
 
     private var mainHandler: Handler = Handler(Looper.getMainLooper())
     private var setTimingRunnable = Runnable {setCurrentTiming()}
@@ -91,16 +87,5 @@ class AudioplayerViewModel(
     fun onDestroy() {
         audioplayerInteractor.releasePlayer()
         mainHandler.removeCallbacks(setTimingRunnable)
-    }
-
-    companion object {
-        fun getViewModelFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                AudioplayerViewModel(
-                    Creator.provideGetChosenTrackUseCase(),
-                    Creator.provideAudioplauerInteractor()
-                )
-            }
-        }
     }
 }

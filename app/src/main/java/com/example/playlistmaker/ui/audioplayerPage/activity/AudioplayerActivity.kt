@@ -7,19 +7,19 @@ import android.os.Looper
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
 import com.example.playlistmaker.ui.audioplayerPage.view_model.AudioplayerViewModel
 import com.example.playlistmaker.ui.audioplayerPage.view_model.PlayerState
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class AudioplayerActivity : AppCompatActivity() {
+class AudioplayerActivity: AppCompatActivity() {
 
-    private lateinit var viewModel: AudioplayerViewModel
+    private val viewModel by viewModel<AudioplayerViewModel>()
     private lateinit var binding: ActivityAudioplayerBinding
 
     private val handler = Handler(Looper.getMainLooper())
@@ -31,8 +31,6 @@ class AudioplayerActivity : AppCompatActivity() {
         binding = ActivityAudioplayerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
-
-        viewModel = ViewModelProvider(this, AudioplayerViewModel.getViewModelFactory())[AudioplayerViewModel::class.java]
 
         viewModel.getTrackLiveData().observe(this) { track ->
             viewModel.preparePlayer(track)
