@@ -6,7 +6,7 @@ import com.example.playlistmaker.domain.search.model.Track
 
 class GetChosenTrackUseCaseImpl(
     private val repository: SearchHistoryRepository
-) : GetChosenTrackUseCase {
+): GetChosenTrackUseCase {
     override fun getTrack(): Track {
         return repository.getChosenTrack()
     }
