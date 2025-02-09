@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.playlistmaker.ui.madiatecPage.activity.MediatecActivity
+import com.example.playlistmaker.ui.madiatec.activity.MediatecActivity
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityMainBinding
 import com.example.playlistmaker.ui.settings.activity.SettingsActivity

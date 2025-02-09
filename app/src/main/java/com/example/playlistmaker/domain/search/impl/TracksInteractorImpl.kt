@@ -8,13 +8,14 @@ class TracksInteractorImpl(
     private val repository: TracksRepository
 ): TracksInteractor {
 
+    private val executor = Executors.newCachedThreadPool()
+
     override fun searchTracks(
         expression: String,
         foundConsumer: TracksInteractor.TracksConsumer,
         nothingFoundConsumer: TracksInteractor.TracksConsumer,
         networkErrorConsumer: TracksInteractor.TracksConsumer
     ) {
-        val executor = Executors.newCachedThreadPool()
         executor.execute {
             val response = repository.searchTracks(expression)
             if (response.resultCode == 200 && response.trackList.isNotEmpty()) {

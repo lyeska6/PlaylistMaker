@@ -1,16 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.madiatecPage.activity.MediatecActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/LinearLayoutScreen"
+    android:background="@color/screen_color"
+    tools:context=".ui.madiatec.activity.MediatecActivity">
 
-    <TextView
-        android:id="@+id/message"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar">
+
+        <TextView
+            style="@style/HeadingText.ToolbarTitle"
+            android:text="@string/media" />
+    </androidx.appcompat.widget.Toolbar>
+    
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:text="@string/media_text"/>
+        android:layout_height="@dimen/pad_48"
+        android:background="@color/screen_color"
+        app:tabTextAppearance="@style/TabText"
+        app:tabTextColor="@color/heading_text"
+        app:tabIndicator="@drawable/tab_indicator"
+        app:tabIndicatorColor="@color/heading_text" />
 
-</FrameLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

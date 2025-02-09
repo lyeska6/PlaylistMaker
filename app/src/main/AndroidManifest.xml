@@ -19,13 +19,13 @@
             android:name=".ui.search.activity.SearchActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.madiatecPage.activity.MediatecActivity"
+            android:name=".ui.madiatec.activity.MediatecActivity"
             android:exported="false" />
         <activity
             android:name=".ui.settings.activity.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.audioplayerPage.activity.AudioplayerActivity"
+            android:name=".ui.audioplayer.activity.AudioplayerActivity"
             android:exported="false"/>
         <activity
             android:name=".ui.main.activity.MainActivity"

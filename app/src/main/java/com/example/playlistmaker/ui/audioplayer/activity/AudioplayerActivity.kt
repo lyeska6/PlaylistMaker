@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.audioplayerPage.activity
+package com.example.playlistmaker.ui.audioplayer.activity
 
 import android.content.Context
 import android.os.Bundle
@@ -11,8 +11,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
-import com.example.playlistmaker.ui.audioplayerPage.view_model.AudioplayerViewModel
-import com.example.playlistmaker.ui.audioplayerPage.view_model.PlayerState
+import com.example.playlistmaker.ui.audioplayer.view_model.AudioplayerViewModel
+import com.example.playlistmaker.ui.audioplayer.view_model.PlayerState
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
