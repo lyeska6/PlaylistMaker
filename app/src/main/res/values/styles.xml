@@ -10,6 +10,8 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
         <item name="android:layout_marginHorizontal">@dimen/padding_16</item>
         <item name="cornerRadius">@dimen/main_but_corner_radius</item>
         <item name="android:backgroundTint">@color/white</item>
@@ -27,6 +29,9 @@
     <style name="SearchBottomButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">36dp</item>
         <item name="android:layout_marginTop">@dimen/pad_24</item>
         <item name="android:paddingHorizontal">@dimen/pad_14</item>
         <item name="android:paddingVertical">@dimen/pad_10</item>
@@ -56,20 +61,26 @@
         <item name="android:paddingStart">@dimen/padding_16</item>
     </style>
 
-    <style name="HeadingFrameLayout">
+    <style name="Toolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/pad_56</item>
+        <item name="android:layout_marginBottom">0dp</item>
+        <item name="contentInsetStartWithNavigation">@dimen/pad_46</item>
+        <item name="navigationIcon">@drawable/arrow_back</item>
     </style>
 
-    <style name="HeadingTextView">
+    <style name="HeadingText.ToolbarTitle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/heading_text</item>
+    </style>
+
+    <style name="HeadingText">
+        <item name="android:paddingTop">@dimen/pad_14</item>
+        <item name="android:paddingBottom">@dimen/padding_16</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textFontWeight">500</item>
-        <item name="android:textColor">@color/heading_text</item>
         <item name="android:textSize">@dimen/text_size_main</item>
-        <item name="android:paddingStart">@dimen/pad_12</item>
-        <item name="android:layout_marginTop">@dimen/pad_14</item>
     </style>
 
     <style name="TrackTextSearch">
@@ -103,5 +114,13 @@
         <item name="android:layout_marginBottom">@dimen/padding_16</item>
         <item name="android:layout_marginEnd">@dimen/padding_16</item>
         <item name="android:layout_marginStart">@dimen/pad_8</item>
+    </style>
+
+    <style name="TabText">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textSize">@dimen/text_size_14</item>
+        <item name="android:textColor">@color/player_main</item>
+        <item name="android:paddingHorizontal">@dimen/pad_18</item>
     </style>
 </resources>

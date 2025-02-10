@@ -34,4 +34,7 @@
     <dimen name="track_name_player_size">22sp</dimen>
     <dimen name="progressbar_size">44dp</dimen>
     <dimen name="progressbar_margintop">124dp</dimen>
+    <dimen name="pad_106">106dp</dimen>
+    <dimen name="pad_242">242dp</dimen>
+    <dimen name="pad_46">46dp</dimen>
 </resources>

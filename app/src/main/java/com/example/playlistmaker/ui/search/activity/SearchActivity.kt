@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivitySearchBinding
 import com.example.playlistmaker.domain.search.model.Track
-import com.example.playlistmaker.ui.audioplayerPage.activity.AudioplayerActivity
+import com.example.playlistmaker.ui.audioplayer.activity.AudioplayerActivity
 import com.example.playlistmaker.ui.search.view_model.SearchScreenState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -143,8 +143,8 @@ class SearchActivity: AppCompatActivity() {
             searchTracksByViewModel(binding.searchInput.text.toString())
         }
 
-        binding.buttonBack.setOnClickListener {
-            onBackPressed()
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

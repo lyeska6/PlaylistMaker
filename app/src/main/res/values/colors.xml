@@ -20,4 +20,5 @@
     <color name="search_error">#1A1B22</color>
     <color name="player_main">#1A1B22</color>
     <color name="playlist_buttons_player">#401A1B22</color>
+    <color name="fragment_text">#000000</color>
 </resources>

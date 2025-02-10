@@ -40,8 +40,8 @@ class SettingsActivity: AppCompatActivity() {
             viewModel.openTerms()
         }
 
-        binding.buttonBack.setOnClickListener {
-            onBackPressed()
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
         }
     }
 

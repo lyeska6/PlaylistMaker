@@ -13,4 +13,5 @@
     <color name="search_error">#FFFFFF</color>
     <color name="player_main">#FFFFFF</color>
     <color name="playlist_buttons_player">#40FFFFFF</color>
+    <color name="fragment_text">#FFFFFF</color>
 </resources>

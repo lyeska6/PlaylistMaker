@@ -4,26 +4,14 @@
     style="@style/LinearLayoutScreen"
     android:background="@color/screen_color">
 
-    <FrameLayout
-        style="@style/HeadingFrameLayout">
-
-        <ImageView
-            android:id="@+id/buttonBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_back"
-            app:tint="@color/heading_text"
-            android:paddingVertical="@dimen/padding_16"
-            android:paddingHorizontal="@dimen/padding_16"
-            android:layout_marginStart="@dimen/pad_4"
-            android:layout_gravity="center_vertical"/>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/Toolbar">
 
         <TextView
-            style="@style/HeadingTextView"
-            android:text="@string/settings"
-            android:layout_marginStart="@dimen/pad_52"/>
-
-    </FrameLayout>
+            style="@style/HeadingText.ToolbarTitle"
+            android:text="@string/settings" />
+    </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout style="@style/FrameLayoutSettings"
         android:layout_marginTop="@dimen/pad_24">

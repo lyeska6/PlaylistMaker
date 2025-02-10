@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.audioplayerPage.view_model
+package com.example.playlistmaker.ui.audioplayer.view_model
 
 import android.os.Handler
 import android.os.Looper
