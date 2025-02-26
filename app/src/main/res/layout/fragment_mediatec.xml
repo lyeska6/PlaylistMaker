@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/LinearLayoutScreen"
     android:background="@color/screen_color"
-    tools:context=".ui.madiatec.activity.MediatecActivity">
+    tools:context=".ui.madiatec.MediatecFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
