@@ -25,7 +25,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/screen_color"
         app:itemIconTint="@color/bottom_navigation_color"
         app:itemTextColor="@color/bottom_navigation_color"
         app:menu="@menu/bottom_navigation_menu"/>
+
+    <ImageView
+        android:id="@+id/bottomNavigationTop"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:src="@drawable/bottom_navigator_top"
+        app:layout_constraintTop_toTopOf="@id/bottomNavigationView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:translationZ="90dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

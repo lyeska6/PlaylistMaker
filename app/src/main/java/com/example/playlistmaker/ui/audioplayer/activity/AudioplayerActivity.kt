@@ -2,20 +2,17 @@ package com.example.playlistmaker.ui.audioplayer.activity
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.TypedValue
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.NavHostFragment
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityAudioplayerBinding
 import com.example.playlistmaker.ui.audioplayer.view_model.AudioplayerViewModel
 import com.example.playlistmaker.ui.audioplayer.view_model.PlayerState
+import com.example.playlistmaker.utils.debounce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -25,9 +22,9 @@ class AudioplayerActivity: AppCompatActivity() {
     private val viewModel by viewModel<AudioplayerViewModel>()
     private lateinit var binding: ActivityAudioplayerBinding
 
-    private val handler = Handler(Looper.getMainLooper())
-
-    private var isClickAllowed = true
+    private val onClickDebounce: (Boolean) -> Unit = debounce(CLICK_DEBOUNCE_DELAY, lifecycleScope, false) {
+        viewModel.startOrPausePlayer()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +40,6 @@ class AudioplayerActivity: AppCompatActivity() {
             binding.trackYear.text = track.releaseDate.substring(0, 4)
             binding.trackGenre.text = track.primaryGenreName
             binding.trackCountry.text = track.country
-            binding.trackDuration.text =
-                SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.trackTimeMillis)
             Glide.with(this)
                 .load(track.artworkUrl100.replaceAfterLast('/', "512x512bb.jpg"))
                 .transform(RoundedCorners(dpToPx(8F, this)))
@@ -54,25 +49,23 @@ class AudioplayerActivity: AppCompatActivity() {
 
         viewModel.getPlayerStateLiveData().observe(this){ state ->
             when (state) {
-                PlayerState.StateDefault -> {
-
+                is PlayerState.StateDefault -> {
+                    defaultPlayerView()
                 }
-                PlayerState.StatePrepared -> {
+                is PlayerState.StatePrepared -> {
                     preparedPlayerView()
                 }
                 is PlayerState.StatePlaying -> {
                     startPlayerView(state.timing)
                 }
-                PlayerState.StatePaused -> {
-                    pausePlayerView()
+                is PlayerState.StatePaused -> {
+                    pausePlayerView(state.timing)
                 }
             }
         }
 
         binding.playButton.setOnClickListener {
-            if (clickDebounce()) {
-                viewModel.startOrPausePlayer()
-            }
+            onClickDebounce(true)
         }
 
         binding.buttonBack.setOnClickListener {
@@ -80,16 +73,10 @@ class AudioplayerActivity: AppCompatActivity() {
         }
     }
 
-    private fun startPlayerView(timing: Int) {
-        binding.playButton.setImageResource(R.drawable.pause_button)
-        val time = SimpleDateFormat(
-            "mm:ss", Locale.getDefault()
-        ).format(timing)
-        binding.currentTiming.text = time
-    }
-
-    private fun pausePlayerView() {
+    private fun defaultPlayerView() {
         binding.playButton.setImageResource(R.drawable.play_button)
+        binding.currentTiming.text = getString(R.string.zero_current_timing)
+        binding.playButton.isEnabled = false
     }
 
     private fun preparedPlayerView() {
@@ -98,19 +85,20 @@ class AudioplayerActivity: AppCompatActivity() {
         binding.playButton.isEnabled = true
     }
 
+    private fun startPlayerView(timing: String) {
+        binding.playButton.setImageResource(R.drawable.pause_button)
+        binding.currentTiming.text = timing
+    }
+
+    private fun pausePlayerView(timing: String) {
+        binding.playButton.setImageResource(R.drawable.play_button)
+        binding.currentTiming.text = timing
+    }
+
     private fun dpToPx(dp: Float, context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics
         ).toInt()
-    }
-
-    private fun clickDebounce(): Boolean {
-        val current = isClickAllowed
-        if (isClickAllowed) {
-            isClickAllowed = false
-            handler.postDelayed({ isClickAllowed = true }, CLICK_DEBOUNCE_DELAY)
-        }
-        return current
     }
 
     override fun onPause() {
@@ -124,6 +112,6 @@ class AudioplayerActivity: AppCompatActivity() {
     }
 
     companion object {
-        private const val CLICK_DEBOUNCE_DELAY = 1000L
+        private const val CLICK_DEBOUNCE_DELAY = 300L
     }
 }
