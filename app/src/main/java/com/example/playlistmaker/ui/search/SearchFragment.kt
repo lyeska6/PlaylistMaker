@@ -1,34 +1,34 @@
-package com.example.playlistmaker.ui.search.activity
+package com.example.playlistmaker.ui.search
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.playlistmaker.R
-import com.example.playlistmaker.databinding.ActivitySearchBinding
+import com.example.playlistmaker.databinding.FragmentSearchBinding
 import com.example.playlistmaker.domain.search.model.Track
-import com.example.playlistmaker.ui.audioplayer.activity.AudioplayerActivity
+import com.example.playlistmaker.ui.search.activity.TracksAdapter
 import com.example.playlistmaker.ui.search.view_model.SearchScreenState
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity: AppCompatActivity() {
+class SearchFragment: Fragment() {
 
+    private lateinit var binding: FragmentSearchBinding
     private val viewModel by viewModel<SearchViewModel>()
-    private lateinit var binding: ActivitySearchBinding
     private val handler = Handler(Looper.getMainLooper())
 
-    private var textSearch = TEXT_SEARCH
     private var isClickAllowed = true
 
     private val searchedTracksArrayList = ArrayList<Track>()
@@ -36,30 +36,29 @@ class SearchActivity: AppCompatActivity() {
         searchedTracksArrayList
     ) { track ->
         if (clickDebounce()) {
-            val playerIntent = Intent(this, AudioplayerActivity::class.java)
             viewModel.addTrackToHistory(track)
-            this.startActivity(playerIntent)
+
+            findNavController().navigate(R.id.action_searchFragment_to_audioplayerActivity)
         }
     }
 
     private val historyTrackArrayList = ArrayList<Track>()
     private val searchHistoryAdapter = TracksAdapter(historyTrackArrayList) { track ->
         if (clickDebounce()) {
-            val playerIntent = Intent(this, AudioplayerActivity::class.java)
             viewModel.addTrackToHistory(track)
             viewModel.getSearchHistory()
-            this.startActivity(playerIntent)
+            findNavController().navigate(R.id.action_searchFragment_to_audioplayerActivity)
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySearchBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
-        binding.searchInput.setText(textSearch)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        viewModel.getSearchScreenStateLiveData().observe(this){ state ->
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        viewModel.getSearchScreenStateLiveData().observe(viewLifecycleOwner){ state ->
             when (state) {
                 SearchScreenState.Default -> {
                     consumeDefaultView()
@@ -81,14 +80,14 @@ class SearchActivity: AppCompatActivity() {
             }
         }
 
-        binding.searchHistoryRV.layoutManager = LinearLayoutManager(this@SearchActivity)
+        binding.searchHistoryRV.layoutManager = LinearLayoutManager(requireContext())
         binding.searchHistoryRV.adapter = searchHistoryAdapter
 
         binding.clearHistoryBut.setOnClickListener {
             viewModel.clearHistory()
         }
 
-        val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        val inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
 
         val searchRunnable = Runnable {
             inputMethodManager?.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
@@ -116,17 +115,13 @@ class SearchActivity: AppCompatActivity() {
             searchDebounce()
         }
 
-        binding.searchInput.doAfterTextChanged { s ->
-            textSearch = s.toString()
-        }
-
         binding.searchInput.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus && binding.searchInput.text.isEmpty()) {
                 viewModel.getSearchHistory()
             }
         }
 
-        binding.tracksSearchRV.layoutManager = LinearLayoutManager(this@SearchActivity)
+        binding.tracksSearchRV.layoutManager = LinearLayoutManager(requireContext())
         binding.tracksSearchRV.adapter = searchedTracksAdapter
 
         binding.searchInput.setOnEditorActionListener { _, actionId, _ ->
@@ -141,10 +136,6 @@ class SearchActivity: AppCompatActivity() {
         binding.searchErrorBut.setOnClickListener {
             handler.removeCallbacks(searchRunnable)
             searchTracksByViewModel(binding.searchInput.text.toString())
-        }
-
-        binding.toolbar.setNavigationOnClickListener {
-            onBackPressedDispatcher.onBackPressed()
         }
     }
 
@@ -172,7 +163,7 @@ class SearchActivity: AppCompatActivity() {
 
     private fun consumeNothingFound() {
         consumeDefaultView()
-        Glide.with(applicationContext)
+        Glide.with(requireContext())
             .load(R.drawable.nothing_found_error)
             .centerInside()
             .into(binding.searchErrorIcon)
@@ -183,7 +174,7 @@ class SearchActivity: AppCompatActivity() {
 
     private fun consumeNetworkError() {
         consumeDefaultView()
-        Glide.with(applicationContext)
+        Glide.with(requireContext())
             .load(R.drawable.server_connection_error)
             .centerInside()
             .into(binding.searchErrorIcon)
@@ -211,16 +202,6 @@ class SearchActivity: AppCompatActivity() {
         return !s.isNullOrEmpty()
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(INPUT_SEARCH, textSearch)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        textSearch = savedInstanceState.getString(INPUT_SEARCH, TEXT_SEARCH)
-    }
-
     private fun clickDebounce(): Boolean {
         val current = isClickAllowed
         if (isClickAllowed) {
@@ -231,8 +212,6 @@ class SearchActivity: AppCompatActivity() {
     }
 
     companion object {
-        const val INPUT_SEARCH = "INPUT_SEARCH"
-        const val TEXT_SEARCH = ""
         private const val CLICK_DEBOUNCE_DELAY = 1000L
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
     }

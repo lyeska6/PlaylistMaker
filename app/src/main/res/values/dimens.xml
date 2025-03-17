@@ -22,6 +22,7 @@
     <dimen name="track_image_search">44dp</dimen>
     <dimen name="track_text_mar_start">66dp</dimen>
     <dimen name="text_size_11">11sp</dimen>
+    <dimen name="text_size_12">12sp</dimen>
     <dimen name="pad_4">4dp</dimen>
     <dimen name="track_text_mar_end">44dp</dimen>
     <dimen name="pad_102">102dp</dimen>
