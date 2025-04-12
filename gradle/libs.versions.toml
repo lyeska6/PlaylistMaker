@@ -5,7 +5,7 @@ fragmentKtxVersion = "1.5.6"
 glide = "4.16.0"
 gson = "2.10.1"
 koinAndroid = "3.3.0"
-kotlin = "1.9.0"
+kotlin = "2.0.21"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -17,6 +17,7 @@ activity = "1.8.0"
 constraintlayout = "2.1.4"
 navigationFragmentKtx = "2.5.3"
 retrofit = "2.9.0"
+roomRuntime = "2.5.1"
 viewpager2Version = "1.0.0"
 
 [libraries]
@@ -24,6 +25,9 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-fragment-ktx-v156 = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtxVersion" }
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigationFragmentKtx" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomRuntime" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-viewpager2 = { module = "androidx.viewpager2:viewpager2", version.ref = "viewpager2Version" }
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

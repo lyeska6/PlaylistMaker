@@ -110,11 +110,11 @@
         app:layout_constraintStart_toEndOf="@id/leftMainGuideline"
         app:layout_constraintEnd_toStartOf="@id/playButton"/>
 
-    <ImageView
+    <ImageButton
         android:id="@+id/likeTrackBut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/like_track_but"
+        android:src="@drawable/unliked_track_but"
         android:backgroundTint="@color/screen_color"
         app:layout_constraintBottom_toBottomOf="@id/playButton"
         app:layout_constraintTop_toTopOf="@id/playButton"

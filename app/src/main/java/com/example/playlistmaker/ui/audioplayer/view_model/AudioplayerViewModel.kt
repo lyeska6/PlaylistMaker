@@ -1,15 +1,13 @@
 package com.example.playlistmaker.ui.audioplayer.view_model
 
-import android.os.Handler
-import android.os.Looper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.playlistmaker.domain.favourites.FavouritesInteractor
 import com.example.playlistmaker.domain.player.AudioplayerInteractor
-import com.example.playlistmaker.domain.player.GetChosenTrackUseCase
+import com.example.playlistmaker.domain.player.ChosenTrackUseCase
 import com.example.playlistmaker.domain.search.model.Track
-import com.example.playlistmaker.utils.debounce
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -17,8 +15,9 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 class AudioplayerViewModel(
-    getChosenTrackUseCase: GetChosenTrackUseCase,
-    private val audioplayerInteractor: AudioplayerInteractor
+    getChosenTrackUseCase: ChosenTrackUseCase,
+    private val audioplayerInteractor: AudioplayerInteractor,
+    private val favouritesInteractor: FavouritesInteractor
 ): ViewModel() {
 
     private var timerJob: Job? = null
@@ -88,6 +87,21 @@ class AudioplayerViewModel(
 
     private fun getTiming(): String = formatTiming(audioplayerInteractor.getCurrentTiming())
     private fun formatTiming(time: Int): String = SimpleDateFormat("mm:ss", Locale.getDefault()).format(time)
+
+    fun onFavouriteClicked() {
+        val track = trackLiveData.value!!
+        if (track.isFavourite) {
+            viewModelScope.launch {
+                favouritesInteractor.deleteTrack(track)
+            }
+            trackLiveData.postValue(track.apply { isFavourite = false })
+        } else {
+            viewModelScope.launch {
+                favouritesInteractor.addTrack(track)
+            }
+            trackLiveData.postValue(track.apply { isFavourite = true })
+        }
+    }
 
     companion object {
         const val GET_TIMING_DELAY = 300L
