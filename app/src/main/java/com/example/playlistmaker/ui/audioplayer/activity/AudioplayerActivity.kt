@@ -51,13 +51,9 @@ class AudioplayerActivity: AppCompatActivity() {
                 .placeholder(R.drawable.big_placeholder_trackcover)
                 .into(binding.trackCoverView)
             if (track.isFavourite) {
-                Glide.with(this)
-                    .load(R.drawable.liked_track_but)
-                    .into(binding.likeTrackBut)
+                binding.likeTrackBut.setImageResource(R.drawable.liked_track_but)
             } else {
-                Glide.with(this)
-                    .load(R.drawable.unliked_track_but)
-                    .into(binding.likeTrackBut)
+                binding.likeTrackBut.setImageResource(R.drawable.unliked_track_but)
             }
         }
 
