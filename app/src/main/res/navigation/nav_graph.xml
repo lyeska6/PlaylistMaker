@@ -23,7 +23,11 @@
         android:id="@+id/mediatecFragment"
         android:name="com.example.playlistmaker.ui.madiatec.MediatecFragment"
         android:label="fragment_mediatec"
-        tools:layout="@layout/fragment_mediatec" />
+        tools:layout="@layout/fragment_mediatec" >
+        <action
+            android:id="@+id/action_mediatecFragment_to_audioplayerActivity"
+            app:destination="@id/audioplayerActivity" />
+    </fragment>
     <activity
         android:id="@+id/audioplayerActivity"
         android:name="com.example.playlistmaker.ui.audioplayer.activity.AudioplayerActivity"

@@ -2,6 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/LinearLayoutScreen"
     android:background="@color/screen_color">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/tracksRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"/>
     
     <ImageView
         android:id="@+id/emptyImage"

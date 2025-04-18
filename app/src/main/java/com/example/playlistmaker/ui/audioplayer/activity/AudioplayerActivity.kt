@@ -32,8 +32,13 @@ class AudioplayerActivity: AppCompatActivity() {
         setContentView(binding.root)
         window.statusBarColor = ContextCompat.getColor(this, R.color.screen_color)
 
+        var isPlayerPrepared = false
+
         viewModel.getTrackLiveData().observe(this) { track ->
-            viewModel.preparePlayer(track)
+            if (! isPlayerPrepared) {
+                viewModel.preparePlayer(track)
+                isPlayerPrepared = true
+            }
             binding.trackName.text = track.trackName
             binding.trackArtist.text = track.artistName
             binding.trackAlbum.text = track.collectionName
@@ -45,6 +50,11 @@ class AudioplayerActivity: AppCompatActivity() {
                 .transform(RoundedCorners(dpToPx(8F, this)))
                 .placeholder(R.drawable.big_placeholder_trackcover)
                 .into(binding.trackCoverView)
+            if (track.isFavourite) {
+                binding.likeTrackBut.setImageResource(R.drawable.liked_track_but)
+            } else {
+                binding.likeTrackBut.setImageResource(R.drawable.unliked_track_but)
+            }
         }
 
         viewModel.getPlayerStateLiveData().observe(this){ state ->
@@ -66,6 +76,10 @@ class AudioplayerActivity: AppCompatActivity() {
 
         binding.playButton.setOnClickListener {
             onClickDebounce(true)
+        }
+
+        binding.likeTrackBut.setOnClickListener {
+            viewModel.onFavouriteClicked()
         }
 
         binding.buttonBack.setOnClickListener {
