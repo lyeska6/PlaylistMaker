@@ -100,7 +100,7 @@ class SearchFragment: Fragment() {
 
         binding.clearSearchInputBut.setOnClickListener {
             binding.searchInput.setText("")
-            inputMethodManager?.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
+            inputMethodManager.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
             viewModel.getSearchHistory()
         }
 
@@ -122,7 +122,7 @@ class SearchFragment: Fragment() {
 
         binding.searchInput.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                inputMethodManager?.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
+                inputMethodManager.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
                 searchTracksByViewModel(binding.searchInput.text.toString())
             }
             false
@@ -152,7 +152,7 @@ class SearchFragment: Fragment() {
 
     private fun consumeIsLoading() {
         consumeDefaultView()
-        inputMethodManager?.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
+        inputMethodManager.hideSoftInputFromWindow(binding.searchInput.windowToken, 0)
         binding.progressBar.isVisible = true
     }
 

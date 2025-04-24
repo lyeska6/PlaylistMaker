@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.favourites.FavouritesInteractor
 import com.example.playlistmaker.domain.player.AudioplayerInteractor
 import com.example.playlistmaker.domain.player.ChosenTrackUseCase
+import com.example.playlistmaker.domain.playlists.PlaylistsInteractor
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.domain.search.model.Track
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -17,16 +19,25 @@ import java.util.Locale
 class AudioplayerViewModel(
     getChosenTrackUseCase: ChosenTrackUseCase,
     private val audioplayerInteractor: AudioplayerInteractor,
-    private val favouritesInteractor: FavouritesInteractor
+    private val favouritesInteractor: FavouritesInteractor,
+    private val playlistsInteractor: PlaylistsInteractor
 ): ViewModel() {
 
     private var timerJob: Job? = null
 
     private val trackLiveData = MutableLiveData(getChosenTrackUseCase.getTrack())
     private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.StateDefault())
+    private val playlistsListLiveData = MutableLiveData<List<Playlist>>()
+    private val addedToPlaylistToastLiveData = MutableLiveData<String>()
 
     fun getTrackLiveData(): LiveData<Track> = trackLiveData
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
+    fun getPlaylistsListLiveData(): LiveData<List<Playlist>> = playlistsListLiveData
+    fun getAddedToPlaylistToastLiveData(): LiveData<String> = addedToPlaylistToastLiveData
+
+    init {
+        updatePlaylistsList()
+    }
 
     private val prepareConsumer = object: AudioplayerInteractor.Consumer {
         override fun consume() {
@@ -100,6 +111,29 @@ class AudioplayerViewModel(
                 favouritesInteractor.addTrack(track)
             }
             trackLiveData.postValue(track.apply { isFavourite = true })
+        }
+    }
+
+    fun updatePlaylistsList() {
+        viewModelScope.launch {
+            playlistsInteractor.getAllPlaylists().collect{ playlists ->
+                playlistsListLiveData.postValue(playlists)
+            }
+        }
+    }
+
+    fun addTrackToPlaylist(
+        playlist: Playlist,
+        track: Track) {
+        val trackId = track.trackId
+        val idList = playlist.tracksIdList
+        if (trackId in idList) {
+            addedToPlaylistToastLiveData.postValue("Трек уже добавлен в плейлист ${playlist.name}")
+        } else {
+            viewModelScope.launch {
+                playlistsInteractor.addTrackToAnyPlaylist(track, playlist)
+            }
+            addedToPlaylistToastLiveData.postValue("Добавлено в плейлист ${playlist.name}")
         }
     }
 

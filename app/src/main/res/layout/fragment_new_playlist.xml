@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/screen_color"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/arrow_back"
+        app:tint="@color/heading_text"
+        android:paddingVertical="@dimen/padding_16"
+        android:paddingHorizontal="@dimen/padding_16"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="@dimen/pad_4"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="@dimen/pad_4"/>
+
+    <TextView
+        android:id="@+id/heading"
+        style="@style/HeadingText.ToolbarTitle"
+        android:text="@string/new_playlist"
+        app:layout_constraintStart_toEndOf="@+id/buttonBack"
+        android:paddingStart="@dimen/pad_12"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/add_photo_icon"
+        app:layout_constraintTop_toTopOf="@id/playlistCoverView"
+        app:layout_constraintBottom_toBottomOf="@id/playlistCoverView"
+        app:layout_constraintStart_toStartOf="@id/playlistCoverView"
+        app:layout_constraintEnd_toEndOf="@id/playlistCoverView"/>
+
+    <ImageView
+        android:id="@+id/playlistCoverView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/playlist_cover_empty"
+        app:layout_constraintDimensionRatio="h,1:1"
+        app:layout_constraintTop_toBottomOf="@id/heading"
+        android:layout_marginTop="@dimen/pad_26"
+        android:layout_marginHorizontal="@dimen/pad_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/nameEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/new_playlist_edittext"
+        android:layout_marginHorizontal="@dimen/padding_16"
+        android:layout_marginTop="@dimen/pad_32"
+        app:layout_constraintTop_toBottomOf="@id/playlistCoverView"
+        android:hint="@string/new_playlist_name_edittext"
+        android:textColorHint="@color/heading_text"
+        android:maxLines="1"
+        android:textSize="@dimen/text_size_16"
+        android:textFontWeight="400"
+        android:textColor="@color/heading_text"
+        android:fontFamily="@font/ys_display_regular"
+        android:textCursorDrawable="@drawable/cursor"
+        android:cursorVisible="true"
+        android:paddingHorizontal="@dimen/padding_16"/>
+
+    <TextView
+        android:id="@+id/nameEditTextHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_playlist_name_edittext"
+        android:background="@drawable/text_background"
+        app:layout_constraintTop_toTopOf="@id/nameEditText"
+        app:layout_constraintBottom_toTopOf="@id/nameEditText"
+        android:paddingHorizontal="@dimen/pad_4"
+        app:layout_constraintStart_toStartOf="@id/nameEditText"
+        android:layout_marginStart="@dimen/pad_12"
+        android:textSize="@dimen/text_size_12"
+        android:fontFamily="@font/ys_display_regular"
+        android:textFontWeight="400"
+        android:textColor="@color/blue"
+        android:visibility="gone"/>
+
+    <EditText
+        android:id="@+id/descriptionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/new_playlist_edittext"
+        android:layout_marginHorizontal="@dimen/padding_16"
+        android:layout_marginTop="@dimen/padding_16"
+        app:layout_constraintTop_toBottomOf="@id/nameEditText"
+        android:hint="@string/new_playlist_description_edittext"
+        android:textColorHint="@color/heading_text"
+        android:maxLines="1"
+        android:textSize="@dimen/text_size_16"
+        android:textFontWeight="400"
+        android:textColor="@color/heading_text"
+        android:fontFamily="@font/ys_display_regular"
+        android:textCursorDrawable="@drawable/cursor"
+        android:cursorVisible="true"
+        android:paddingHorizontal="@dimen/padding_16"/>
+
+    <TextView
+        android:id="@+id/descriptionEditTextHint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/new_playlist_description_edittext"
+        android:background="@drawable/text_background"
+        app:layout_constraintTop_toTopOf="@id/descriptionEditText"
+        app:layout_constraintBottom_toTopOf="@id/descriptionEditText"
+        android:paddingHorizontal="@dimen/pad_4"
+        app:layout_constraintStart_toStartOf="@id/descriptionEditText"
+        android:layout_marginStart="@dimen/pad_12"
+        android:textSize="@dimen/text_size_12"
+        android:fontFamily="@font/ys_display_regular"
+        android:textFontWeight="400"
+        android:textColor="@color/blue"
+        android:visibility="gone"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/createNewPlaylistBut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@drawable/new_playlist_button"
+        app:backgroundTint="@color/new_playlist_button_color"
+        style="@style/NewPlaylistCreateButton"
+        android:enabled="false"
+        android:text="@string/create_button"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

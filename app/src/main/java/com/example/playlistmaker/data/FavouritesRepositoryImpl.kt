@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.flow
 
 class FavouritesRepositoryImpl(
     private val dataBase: AppDataBase,
-    private val converter: TrackDbConvertor)
-    : FavouritesRepository{
+    private val converter: TrackDbConvertor
+): FavouritesRepository{
 
     override suspend fun addTrack(track: Track) {
         dataBase.getTrackDao().insertTrack(converter.map(track))

@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.PlaylistMaker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/nice_black</item>
-        <item name="colorPrimaryVariant">@color/light_gray</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryVariant">@color/white</item>
+        <item name="colorOnPrimary">@color/nice_black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/nice_black</item>
-        <item name="colorSecondaryVariant">@color/white</item>
+        <item name="colorSecondary">@color/white</item>
+        <item name="colorSecondaryVariant">@color/gray</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <!-- Customize your theme here. -->

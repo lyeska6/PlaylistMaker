@@ -20,5 +20,10 @@
     <color name="search_error">#1A1B22</color>
     <color name="player_main">#1A1B22</color>
     <color name="playlist_buttons_player">#401A1B22</color>
-    <color name="fragment_text">#000000</color>
+    <color name="big_text">#000000</color>
+    <color name="enabled_create_but">@color/blue</color>
+    <color name="unenabled_create_but">@color/gray</color>
+    <color name="playlist_item_text">@color/nice_black</color>
+    <color name="small_text">@color/gray</color>
+    <color name="bottom_sheet_drag">@color/light_gray</color>
 </resources>
