@@ -3,10 +3,14 @@ package com.example.playlistmaker.ui.root
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ActivityRootBinding
+import com.example.playlistmaker.ui.madiatec.activity.NewPlaylistFragment
 
 class RootActivity: AppCompatActivity() {
 
@@ -24,4 +28,12 @@ class RootActivity: AppCompatActivity() {
 
         binding.bottomNavigationView.setupWithNavController(navController)
     }
-}
+
+    fun hideBottomNavigationView() {
+        binding.bottomNavigationView.isVisible = false
+    }
+
+    fun showBottomNavigationView() {
+        binding.bottomNavigationView.isVisible = true
+    }
+ }

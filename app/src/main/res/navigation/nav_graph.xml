@@ -21,16 +21,24 @@
         tools:layout="@layout/fragment_settings"/>
     <fragment
         android:id="@+id/mediatecFragment"
-        android:name="com.example.playlistmaker.ui.madiatec.MediatecFragment"
+        android:name="com.example.playlistmaker.ui.madiatec.activity.MediatecFragment"
         android:label="fragment_mediatec"
         tools:layout="@layout/fragment_mediatec" >
         <action
             android:id="@+id/action_mediatecFragment_to_audioplayerActivity"
             app:destination="@id/audioplayerActivity" />
+        <action
+            android:id="@+id/action_mediatecFragment_to_newPlaylistFragment"
+            app:destination="@id/newPlaylistFragment" />
     </fragment>
     <activity
         android:id="@+id/audioplayerActivity"
         android:name="com.example.playlistmaker.ui.audioplayer.activity.AudioplayerActivity"
         android:label="AudioplayerActivity"
         tools:layout="@layout/activity_audioplayer"/>
+    <fragment
+        android:id="@+id/newPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.madiatec.activity.NewPlaylistFragment"
+        android:label="NewPlaylistFragment"
+        tools:layout="@layout/fragment_new_playlist"/>
 </navigation>

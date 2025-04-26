@@ -1,13 +1,20 @@
 package com.example.playlistmaker.ui.madiatec.activity
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
+import com.example.playlistmaker.domain.playlists.model.Playlist
 import com.example.playlistmaker.ui.madiatec.view_model.PlaylistsState
 import com.example.playlistmaker.ui.madiatec.view_model.PlaylistsViewModel
+import com.example.playlistmaker.ui.root.RootActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment: Fragment() {
@@ -17,8 +24,15 @@ class PlaylistsFragment: Fragment() {
     }
 
     private val viewModel by viewModel<PlaylistsViewModel>()
-
     private lateinit var binding: FragmentPlaylistsBinding
+
+    private var playlists = ArrayList<Playlist>()
+    private val adapter = PlaylistsAdapter(playlists)
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getPlaylists()
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -32,10 +46,38 @@ class PlaylistsFragment: Fragment() {
         viewModel.getScreenStateLiveData().observe(viewLifecycleOwner){ state ->
             when (state) {
                 PlaylistsState.StateEmpty -> {
-
+                    viewEmpty()
+                }
+                is PlaylistsState.StateData -> {
+                    viewData(state.playlists)
                 }
             }
         }
+
+        binding.newPlaylistBut.setOnClickListener {
+            (activity as RootActivity).hideBottomNavigationView()
+            findNavController().navigate(R.id.action_mediatecFragment_to_newPlaylistFragment)
+        }
+
+        binding.playlistsRV.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.playlistsRV.adapter = adapter
+    }
+
+    private fun viewEmpty() {
+        binding.emptyImage.isVisible = true
+        binding.emptyText.isVisible = true
+
+        binding.playlistsRV.isVisible = false
+    }
+
+    private fun viewData(newPlaylists: List<Playlist>) {
+        binding.emptyImage.isVisible = false
+        binding.emptyText.isVisible = false
+
+        playlists.clear()
+        playlists.addAll(newPlaylists)
+        binding.playlistsRV.adapter?.notifyDataSetChanged()
+        binding.playlistsRV.isVisible = true
     }
 
 }

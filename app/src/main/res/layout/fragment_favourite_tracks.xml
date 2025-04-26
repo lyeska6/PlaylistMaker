@@ -27,7 +27,7 @@
         android:fontFamily="@font/ys_display_medium"
         android:gravity="center_horizontal"
         android:text="@string/empty_favourites"
-        android:textColor="@color/fragment_text"
+        android:textColor="@color/big_text"
         android:textFontWeight="400"
         android:textSize="@dimen/text_size_19" />
 

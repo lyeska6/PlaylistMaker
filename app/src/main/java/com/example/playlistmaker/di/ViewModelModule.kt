@@ -2,6 +2,7 @@ package com.example.playlistmaker.di
 
 import com.example.playlistmaker.ui.audioplayer.view_model.AudioplayerViewModel
 import com.example.playlistmaker.ui.madiatec.view_model.FavouritesViewModel
+import com.example.playlistmaker.ui.madiatec.view_model.NewPlaylistViewModel
 import com.example.playlistmaker.ui.madiatec.view_model.PlaylistsViewModel
 import com.example.playlistmaker.ui.search.view_model.SearchViewModel
 import com.example.playlistmaker.ui.settings.view_model.SettingsViewModel
@@ -11,7 +12,7 @@ import org.koin.dsl.module
 val viewModelModule = module {
 
     viewModel {
-        AudioplayerViewModel(get(), get(), get ())
+        AudioplayerViewModel(get(), get(), get(), get())
     }
 
     viewModel {
@@ -27,6 +28,10 @@ val viewModelModule = module {
     }
 
     viewModel {
-        PlaylistsViewModel()
+        PlaylistsViewModel(get())
+    }
+
+    viewModel {
+        NewPlaylistViewModel(get())
     }
 }

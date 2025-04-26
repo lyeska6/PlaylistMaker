@@ -1,6 +1,8 @@
 package com.example.playlistmaker.di
 
 import com.example.playlistmaker.data.FavouritesRepositoryImpl
+import com.example.playlistmaker.data.PlaylistsRepositoryImpl
+import com.example.playlistmaker.data.converters.PlaylistDbConvertor
 import com.example.playlistmaker.data.converters.TrackDbConvertor
 import com.example.playlistmaker.data.player.impl.AudioplayerRepositoryImpl
 import com.example.playlistmaker.data.search.impl.SearchHistoryRepositoryImpl
@@ -10,6 +12,7 @@ import com.example.playlistmaker.data.sharing.impl.ExternalNavigatorImpl
 import com.example.playlistmaker.data.sharing.impl.SharingRepositoryImpl
 import com.example.playlistmaker.domain.favourites.FavouritesRepository
 import com.example.playlistmaker.domain.player.AudioplayerRepository
+import com.example.playlistmaker.domain.playlists.PlaylistsRepository
 import com.example.playlistmaker.domain.search.SearchHistoryRepository
 import com.example.playlistmaker.domain.search.TracksRepository
 import com.example.playlistmaker.domain.settings.SettingsRepository
@@ -50,5 +53,13 @@ val repositoryModule = module {
 
     single<FavouritesRepository> {
         FavouritesRepositoryImpl(get(), get())
+    }
+
+    factory {
+        PlaylistDbConvertor(get())
+    }
+
+    single<PlaylistsRepository> {
+        PlaylistsRepositoryImpl(get(), get(), get())
     }
 }

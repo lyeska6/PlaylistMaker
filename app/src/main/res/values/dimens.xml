@@ -38,4 +38,6 @@
     <dimen name="pad_106">106dp</dimen>
     <dimen name="pad_242">242dp</dimen>
     <dimen name="pad_46">46dp</dimen>
+    <dimen name="pad_26">26dp</dimen>
+    <dimen name="pad_32">32dp</dimen>
 </resources>

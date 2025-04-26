@@ -15,14 +15,6 @@ class TrackViewHolder(
     private val binding: ItemTrackBinding
 ): RecyclerView.ViewHolder(binding.root) {
 
-    private fun dpToPx(dp: Float, context: Context): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dp,
-            context.resources.displayMetrics
-        ).toInt()
-    }
-
     fun bind(track: Track) {
         binding.trackName.text = track.trackName
         binding.trackArtist.text = track.artistName
@@ -35,5 +27,13 @@ class TrackViewHolder(
         binding.trackName.requestLayout()
         binding.trackArtist.requestLayout()
         binding.trackTime.requestLayout()
+    }
+
+    private fun dpToPx(dp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.resources.displayMetrics
+        ).toInt()
     }
 }
