@@ -268,7 +268,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/addPlaylistFragmentContainerView"
-        android:name="com.example.playlistmaker.ui.madiatec.activity.NewPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.playlists.activity.NewPlaylistFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"/>

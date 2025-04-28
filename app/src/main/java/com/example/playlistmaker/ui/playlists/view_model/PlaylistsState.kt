@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.madiatec.view_model
+package com.example.playlistmaker.ui.playlists.view_model
 
 import com.example.playlistmaker.domain.playlists.model.Playlist
 

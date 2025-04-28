@@ -4,7 +4,7 @@ import com.example.playlistmaker.domain.sharing.model.EmailData
 
 interface ExternalNavigator {
 
-    fun shareLink(link: String)
+    fun shareString(str: String)
 
     fun openLink(link: String)
 

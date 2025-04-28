@@ -10,9 +10,9 @@ class ExternalNavigatorImpl(
     private val context: Context
 ): ExternalNavigator {
 
-    override fun shareLink(link: String) {
+    override fun shareString(str: String) {
         val shareIntent = Intent(Intent.ACTION_SEND)
-        shareIntent.putExtra(Intent.EXTRA_TEXT, link)
+        shareIntent.putExtra(Intent.EXTRA_TEXT, str)
         shareIntent.setType("text/plain")
         shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         context.startActivity(Intent.createChooser(shareIntent, "Выберите способ отправки").setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))

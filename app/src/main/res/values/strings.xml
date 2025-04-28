@@ -40,5 +40,14 @@
     <string name="cancel">Отмена</string>
     <string name="end">Завершить</string>
     <string name="add_to_playlist">Добавить в плейлист</string>
+    <string name="delete_track_title">Удалить трек</string>
+    <string name="delete_track_description">Хотите удалить трек?</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="share">Поделиться</string>
+    <string name="change_info">Редактировать информацию</string>
+    <string name="delete_playlist">Удалить плейлист</string>
+    <string name="save">Сохранить</string>
+    <string name="redact">Редактировать</string>
     ?>
 </resources>

@@ -30,6 +30,9 @@
         <action
             android:id="@+id/action_mediatecFragment_to_newPlaylistFragment"
             app:destination="@id/newPlaylistFragment" />
+        <action
+            android:id="@+id/action_mediatecFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
     </fragment>
     <activity
         android:id="@+id/audioplayerActivity"
@@ -38,7 +41,24 @@
         tools:layout="@layout/activity_audioplayer"/>
     <fragment
         android:id="@+id/newPlaylistFragment"
-        android:name="com.example.playlistmaker.ui.madiatec.activity.NewPlaylistFragment"
+        android:name="com.example.playlistmaker.ui.playlists.activity.NewPlaylistFragment"
         android:label="NewPlaylistFragment"
+        tools:layout="@layout/fragment_new_playlist"/>
+    <fragment
+        android:id="@+id/playlistFragment"
+        android:name="com.example.playlistmaker.ui.playlists.activity.PlaylistFragment"
+        android:label="PlaylistFragment"
+        tools:layout="@layout/fragment_playlist">
+        <action
+            android:id="@+id/action_playlistFragment_to_audioplayerActivity"
+            app:destination="@id/audioplayerActivity" />
+        <action
+            android:id="@+id/action_playlistFragment_to_playlistRedactorFragment"
+            app:destination="@id/playlistRedactorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playlistRedactorFragment"
+        android:name="com.example.playlistmaker.ui.playlists.activity.PlaylistRedactorFragment"
+        android:label="PlaylistRedactorFragment"
         tools:layout="@layout/fragment_new_playlist"/>
 </navigation>

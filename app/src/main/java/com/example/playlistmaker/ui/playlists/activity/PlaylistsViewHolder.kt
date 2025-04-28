@@ -1,8 +1,7 @@
-package com.example.playlistmaker.ui.madiatec.activity
+package com.example.playlistmaker.ui.playlists.activity
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.util.TypedValue
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -12,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ItemPlaylistBigBinding
 import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.ui.playlists.view_model.NewPlaylistViewModel
 import java.io.File
 
 class PlaylistsViewHolder(
@@ -24,7 +24,7 @@ class PlaylistsViewHolder(
         Glide.with(itemView)
             .load(getPlaylistCoverUri(playlist))
             .transform(CenterCrop(), RoundedCorners(dpToPx(8F, itemView.context)))
-            .placeholder(R.drawable.big_placeholder_trackcover)
+            .placeholder(R.drawable.placeholder_trackcover)
             .into(binding.playlistCover)
     }
 
@@ -43,7 +43,7 @@ class PlaylistsViewHolder(
     }
 
     private fun getPlaylistCoverUri(playlist: Playlist): Uri{
-        val file = File(itemView.context.getDir(playlist.coverPath, Context.MODE_PRIVATE), playlist.name)
+        val file = File(itemView.context.getDir(NewPlaylistViewModel.DIR_NAME, Context.MODE_PRIVATE), playlist.coverPath)
         return file.toUri()
     }
 

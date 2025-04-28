@@ -7,7 +7,7 @@ import com.example.playlistmaker.data.db.dao.TrackDao
 import com.example.playlistmaker.data.db.dao.TrackInAnyPlaylistDao
 
 @Database(
-    version = 3,
+    version = 5,
     entities = [
         TrackEntity::class,
         PlaylistEntity::class,

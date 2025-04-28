@@ -1,7 +1,6 @@
-package com.example.playlistmaker.ui.madiatec.activity
+package com.example.playlistmaker.ui.playlists.activity
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentPlaylistsBinding
 import com.example.playlistmaker.domain.playlists.model.Playlist
-import com.example.playlistmaker.ui.madiatec.view_model.PlaylistsState
-import com.example.playlistmaker.ui.madiatec.view_model.PlaylistsViewModel
+import com.example.playlistmaker.ui.playlists.view_model.PlaylistsState
+import com.example.playlistmaker.ui.playlists.view_model.PlaylistsViewModel
 import com.example.playlistmaker.ui.root.RootActivity
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -27,7 +26,9 @@ class PlaylistsFragment: Fragment() {
     private lateinit var binding: FragmentPlaylistsBinding
 
     private var playlists = ArrayList<Playlist>()
-    private val adapter = PlaylistsAdapter(playlists)
+    private val adapter = PlaylistsAdapter(playlists) { id ->
+        goToThePlaylist(id)
+    }
 
     override fun onStart() {
         super.onStart()
@@ -78,6 +79,11 @@ class PlaylistsFragment: Fragment() {
         playlists.addAll(newPlaylists)
         binding.playlistsRV.adapter?.notifyDataSetChanged()
         binding.playlistsRV.isVisible = true
+    }
+
+    private fun goToThePlaylist(id: Long) {
+        (activity as RootActivity).hideBottomNavigationView()
+        findNavController().navigate(R.id.action_mediatecFragment_to_playlistFragment, PlaylistFragment.createArgs(id))
     }
 
 }
