@@ -188,11 +188,13 @@ class PlaylistFragment: Fragment() {
             .transform(CenterCrop(), RoundedCorners(dpToPx(2F, requireContext())))
             .placeholder(R.drawable.placeholder_trackcover)
             .into(binding.optionsPlaylistCover)
+        binding.noTracksText.isVisible = duration == 0L
     }
 
     private fun bindTracks(tracks: List<Track>) {
         tracksList.clear()
         tracksList.addAll(tracks)
+        tracksList.reverse()
         binding.playlistsRV.adapter?.notifyDataSetChanged()
     }
 

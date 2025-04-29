@@ -125,8 +125,13 @@ class AudioplayerActivity: AppCompatActivity() {
             updateBottomSheet(list)
         }
 
-        viewModel.getAddedToPlaylistToastLiveData().observe(this){ s ->
-            Toast.makeText(this, s, Toast.LENGTH_LONG).show()
+        viewModel.getAddedToPlaylistToastLiveData().observe(this){ pair ->
+            if (pair.first) {
+                Toast.makeText(this,  "Добавлено в плейлист ${pair.second}", Toast.LENGTH_LONG).show()
+                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+            } else {
+                Toast.makeText(this, "Трек уже добавлен в плейлист ${pair.second}", Toast.LENGTH_LONG).show()
+            }
         }
 
         binding.playlistsRV.layoutManager = LinearLayoutManager(this)
@@ -200,7 +205,6 @@ class AudioplayerActivity: AppCompatActivity() {
 
     private fun onPlaylistClick(playlist: Playlist) {
         viewModel.addTrackToPlaylist(playlist, theTrack)
-        bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
     override fun onPause() {

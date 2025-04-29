@@ -28,12 +28,12 @@ class AudioplayerViewModel(
     private val trackLiveData = MutableLiveData(getChosenTrackUseCase.getTrack())
     private val playerStateLiveData = MutableLiveData<PlayerState>(PlayerState.StateDefault())
     private val playlistsListLiveData = MutableLiveData<List<Playlist>>()
-    private val addedToPlaylistToastLiveData = MutableLiveData<String>()
+    private val addedToPlaylistToastLiveData = MutableLiveData<Pair<Boolean, String>>()
 
     fun getTrackLiveData(): LiveData<Track> = trackLiveData
     fun getPlayerStateLiveData(): LiveData<PlayerState> = playerStateLiveData
     fun getPlaylistsListLiveData(): LiveData<List<Playlist>> = playlistsListLiveData
-    fun getAddedToPlaylistToastLiveData(): LiveData<String> = addedToPlaylistToastLiveData
+    fun getAddedToPlaylistToastLiveData(): LiveData<Pair<Boolean, String>> = addedToPlaylistToastLiveData
 
     init {
         updatePlaylistsList()
@@ -128,12 +128,12 @@ class AudioplayerViewModel(
         val trackId = track.trackId
         val idList = playlist.tracksIdList
         if (trackId in idList) {
-            addedToPlaylistToastLiveData.postValue("Трек уже добавлен в плейлист ${playlist.name}")
+            addedToPlaylistToastLiveData.postValue(Pair(false, playlist.name))
         } else {
             viewModelScope.launch {
                 playlistsInteractor.addTrackToAnyPlaylist(track, playlist)
             }
-            addedToPlaylistToastLiveData.postValue("Добавлено в плейлист ${playlist.name}")
+            addedToPlaylistToastLiveData.postValue(Pair(true, playlist.name))
         }
     }
 

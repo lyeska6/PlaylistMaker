@@ -76,7 +76,6 @@ class PlaylistRedactorFragment: NewPlaylistFragment() {
                     || isCoverLoaded != getPlaylistCoverUri(playlist)) {
                     var coverPath = playlist.coverPath
                     if (isCoverLoaded != null && isCoverLoaded != getPlaylistCoverUri(playlist)) {
-                        Log.d("tag1", "photo changed")
                         coverPath = saveImageToPrivateStorage(binding.nameEditText.text.toString()+playlist.id.toString(), isCoverLoaded!!)
                     }
                     viewModel.updatePlaylist(
