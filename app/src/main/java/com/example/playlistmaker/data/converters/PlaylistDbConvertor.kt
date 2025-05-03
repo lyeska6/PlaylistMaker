@@ -15,11 +15,12 @@ class PlaylistDbConvertor(private val gson: Gson) {
         return Playlist(playlistEntity.id, playlistEntity.name, playlistEntity.description, playlistEntity.coverPath, jsonToList(playlistEntity.tracksIdList), playlistEntity.size)
     }
 
+
     private fun listToJson(list: List<String>): String {
         return gson.toJson(list.toTypedArray())
     }
 
-    private fun jsonToList(json: String): List<String> {
+    fun jsonToList(json: String): List<String> {
         return gson.fromJson(
                 json,
                 Array<String>::class.java

@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.ItemPlaylistSmallBinding
 import com.example.playlistmaker.domain.playlists.model.Playlist
+import com.example.playlistmaker.ui.playlists.view_model.NewPlaylistViewModel
 import java.io.File
 
 class PlaylistsToAddTrackViewHolder(
@@ -42,7 +43,7 @@ class PlaylistsToAddTrackViewHolder(
     }
 
     private fun getPlaylistCoverUri(playlist: Playlist): Uri {
-        val file = File(itemView.context.getDir(playlist.coverPath, Context.MODE_PRIVATE), playlist.name)
+        val file = File(itemView.context.getDir(NewPlaylistViewModel.DIR_NAME, Context.MODE_PRIVATE), playlist.coverPath)
         return file.toUri()
     }
 

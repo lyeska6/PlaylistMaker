@@ -40,4 +40,7 @@
     <dimen name="pad_46">46dp</dimen>
     <dimen name="pad_26">26dp</dimen>
     <dimen name="pad_32">32dp</dimen>
+    <dimen name="text_size_24">24sp</dimen>
+    <dimen name="text_size_18">18sp</dimen>
+    <dimen name="pad_266">266dp</dimen>
 </resources>

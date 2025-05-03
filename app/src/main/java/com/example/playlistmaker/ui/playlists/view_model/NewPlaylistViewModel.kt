@@ -1,13 +1,12 @@
-package com.example.playlistmaker.ui.madiatec.view_model
+package com.example.playlistmaker.ui.playlists.view_model
 
-import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlistmaker.domain.playlists.PlaylistsInteractor
 import com.example.playlistmaker.domain.playlists.model.Playlist
 import kotlinx.coroutines.launch
 
-class NewPlaylistViewModel(
+open class NewPlaylistViewModel(
     private val interactor: PlaylistsInteractor
 ): ViewModel() {
 
@@ -15,11 +14,11 @@ class NewPlaylistViewModel(
         const val DIR_NAME = "PlaylistsCoversDir"
     }
 
-    fun createPlaylist(name: String, description: String?, isCoverLoaded: Uri?) {
+    fun createPlaylist(name: String, description: String?, coverPath: String) {
         val playlist = Playlist(0,
             name,
             if (!description.isNullOrEmpty()) description else "",
-            DIR_NAME,
+            coverPath,
             emptyList<String>(),
             0
         )

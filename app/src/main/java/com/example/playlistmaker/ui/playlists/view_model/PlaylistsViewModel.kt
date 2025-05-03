@@ -1,6 +1,5 @@
-package com.example.playlistmaker.ui.madiatec.view_model
+package com.example.playlistmaker.ui.playlists.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

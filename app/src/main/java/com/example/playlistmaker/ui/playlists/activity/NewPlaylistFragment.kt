@@ -1,4 +1,4 @@
-package com.example.playlistmaker.ui.madiatec.activity
+package com.example.playlistmaker.ui.playlists.activity
 
 import android.Manifest
 import android.content.Context
@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -28,28 +29,27 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlistmaker.R
 import com.example.playlistmaker.databinding.FragmentNewPlaylistBinding
-import com.example.playlistmaker.domain.playlists.model.Playlist
-import com.example.playlistmaker.ui.madiatec.view_model.NewPlaylistViewModel
-import com.example.playlistmaker.ui.madiatec.view_model.NewPlaylistViewModel.Companion.DIR_NAME
+import com.example.playlistmaker.ui.playlists.view_model.NewPlaylistViewModel
+import com.example.playlistmaker.ui.playlists.view_model.NewPlaylistViewModel.Companion.DIR_NAME
 import com.example.playlistmaker.ui.root.RootActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.File
 import java.io.FileOutputStream
 
-class NewPlaylistFragment: Fragment() {
+open class NewPlaylistFragment: Fragment() {
 
-    private val viewModel by viewModel<NewPlaylistViewModel>()
+    open val viewModel by viewModel<NewPlaylistViewModel>()
 
-    private lateinit var binding: FragmentNewPlaylistBinding
+    lateinit var binding: FragmentNewPlaylistBinding
     private lateinit var inputMethodManager: InputMethodManager
 
-    private var isCoverLoaded: Uri? = null
+    var isCoverLoaded: Uri? = null
 
     private lateinit var confirmDialog: MaterialAlertDialogBuilder
     private var deniedCounter = 0
 
-    private val backCallback = object : OnBackPressedCallback(true) {
+    val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
             goBack()
         }
@@ -148,14 +148,7 @@ class NewPlaylistFragment: Fragment() {
         }
 
         binding.createNewPlaylistBut.setOnClickListener {
-            if (isCoverLoaded != null) {
-                saveImageToPrivateStorage(binding.nameEditText.text.toString(), isCoverLoaded!!)
-            }
-            viewModel.createPlaylist(binding.nameEditText.text.toString(),
-                binding.descriptionEditText.text.toString(),
-                isCoverLoaded)
-            Toast.makeText(requireContext(), "Плейлист ${binding.nameEditText.text} создан", Toast.LENGTH_LONG).show()
-            reallyGoBack()
+            savePlaylist()
         }
 
         binding.buttonBack.setOnClickListener {
@@ -163,22 +156,46 @@ class NewPlaylistFragment: Fragment() {
         }
     }
 
-    private fun saveImageToPrivateStorage(fileName: String, uri: Uri) {
-        val file = File(requireContext().getDir(DIR_NAME, Context.MODE_PRIVATE), fileName)
+    open fun savePlaylist() {
+        var theFileName = ""
+        if (isCoverLoaded != null) {
+            val fileName = binding.nameEditText.text.toString()
+            theFileName = saveImageToPrivateStorage(fileName, isCoverLoaded!!)
+        }
+        viewModel.createPlaylist(binding.nameEditText.text.toString(),
+            binding.descriptionEditText.text.toString(),
+            theFileName)
+        Toast.makeText(requireContext(), "Плейлист ${binding.nameEditText.text} создан", Toast.LENGTH_LONG).show()
+        reallyGoBack()
+    }
+
+    fun saveImageToPrivateStorage(fileName: String, uri: Uri): String {
+        var file = File(requireContext().getDir(DIR_NAME, Context.MODE_PRIVATE), fileName)
+        var newFileName = fileName
+        var s = 0
+        while (file.exists()) {
+            s += 1
+            Log.d("tag1", "file exists")
+            newFileName = "$fileName $s"
+            file = File(requireContext().getDir(DIR_NAME, Context.MODE_PRIVATE), newFileName)
+        }
+        Log.d("tag1", "in saving file exists is ${file.exists()}")
         val inputStream = requireContext().contentResolver.openInputStream(uri)
         val outputStream = FileOutputStream(file)
         BitmapFactory
             .decodeStream(inputStream)
             .compress(Bitmap.CompressFormat.JPEG, 30, outputStream)
+        Log.d("tag1", "after saving file exists is ${file.exists()}")
+        return newFileName
     }
 
-    private fun dpToPx(dp: Float, context: Context): Int {
+    fun dpToPx(dp: Float, context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP, dp, context.resources.displayMetrics
         ).toInt()
     }
 
-    private fun goBack() {
+    open fun goBack() {
         if (binding.nameEditText.text.isNullOrEmpty() and binding.descriptionEditText.text.isNullOrEmpty() and (isCoverLoaded == null)) {
             reallyGoBack()
         } else {
@@ -186,7 +203,7 @@ class NewPlaylistFragment: Fragment() {
         }
     }
 
-    private fun reallyGoBack() {
+    open fun reallyGoBack() {
         backCallback.isEnabled = false
         if (requireActivity() is RootActivity) {
             (activity as RootActivity).showBottomNavigationView()

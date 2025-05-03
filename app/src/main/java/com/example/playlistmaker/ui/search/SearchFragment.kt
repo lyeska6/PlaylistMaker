@@ -34,17 +34,19 @@ class SearchFragment: Fragment() {
 
     private val searchedTracksArrayList = ArrayList<Track>()
     private val searchedTracksAdapter = TracksAdapter(
-        searchedTracksArrayList
-    ) { track ->
+        searchedTracksArrayList,
+        false,
+        { track ->
         onTrackClickDebounce(track)
-    }
+        }, { true })
 
     private val historyTrackArrayList = ArrayList<Track>()
     private val searchHistoryAdapter = TracksAdapter(
-        historyTrackArrayList
-    ) { track ->
+        historyTrackArrayList,
+        false,
+        { track ->
         onHistoryTrackClickDebounce(track)
-    }
+        }, { true })
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentSearchBinding.inflate(inflater, container, false)

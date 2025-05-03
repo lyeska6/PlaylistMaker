@@ -32,10 +32,11 @@ class FavouritesFragment: Fragment() {
     private lateinit var onTrackClickDebounce: (Track) -> Unit
     private val tracksArrayList = ArrayList<Track>()
     private val tracksAdapter = TracksAdapter(
-        tracksArrayList
-    ) { track ->
+        tracksArrayList,
+        false,
+        { track ->
         onTrackClickDebounce(track)
-    }
+    }, {true})
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
