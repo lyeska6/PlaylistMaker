@@ -1,4 +1,4 @@
-# Playlist maker
+# Playlist Maker
 
 Android-приложение для поиска треков и создания персональных плейлистов.
 
